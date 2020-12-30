@@ -17,7 +17,7 @@
 #ifndef MIRBUFFERSGTEXTURE_H
 #define MIRBUFFERSGTEXTURE_H
 
-#include "miral/mirbuffer.h"
+#include "miroil/mirbuffer.h"
 
 #include <QSGTexture>
 
@@ -44,7 +44,7 @@ public:
     void bind() override;
 
 private:
-    mutable miral::GLBuffer m_mirBuffer;
+    mutable miroil::GLBuffer m_mirBuffer;
     int m_width;
     int m_height;
     mutable GLint m_textureId;

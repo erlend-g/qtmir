@@ -3,6 +3,7 @@
 #pkg_check_modules(QT5PLATFORM_SUPPORT Qt5PlatformSupport REQUIRED)
 
 add_subdirectory(miral)
+pkg_check_modules(MIROIL miroil REQUIRED)
 
 # Hacks for the QPA privates monster.
 pkg_check_modules(FONTCONFIG fontconfig REQUIRED)
@@ -120,6 +121,10 @@ add_library(qpa-mirserver SHARED
     # We need to run moc on these headers
 )
 
+target_include_directories(qpa-mirserver
+    PRIVATE ${MIROIL_INCLUDE_DIRS}
+)
+
 # We have to remove -pedantic for tracepoints.c
 string (REPLACE " -pedantic " " " TRACEPOINTS_CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
 # BYTE_ORDER needed to compile tracepoints in C99 mode.
@@ -130,6 +135,7 @@ target_link_libraries(
     qpa-mirserver
     ${QT5PLATFORMSUPPORT_LIBS}
 
+    ${MIROIL_LDFLAGS}
     ${MIRAL_LDFLAGS}
     ${MIRSERVER_LDFLAGS}
     ${URL_DISPATCHER_LDFLAGS}

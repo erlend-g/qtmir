@@ -1,3 +1,5 @@
+pkg_check_modules(MIROIL miroil REQUIRED)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
     ${CMAKE_SOURCE_DIR}/src/common
@@ -8,6 +10,7 @@ include_directories(
     ${GLIB_INCLUDE_DIRS}
     ${GIO_INCLUDE_DIRS}
     ${GIO_UNIX_INCLUDE_DIRS}
+    ${MIROIL_INCLUDE_DIRS}
     ${MIRAL_INCLUDE_DIRS}
     ${MIRSERVER_INCLUDE_DIRS}
     ${MIRRENDERERGLDEV_INCLUDE_DIRS}
@@ -83,6 +86,7 @@ target_link_libraries(
 
     ${GLIB_LDFLAGS}
     ${UBUNTU_PLATFORM_API_LDFLAGS}
+    ${MIROIL_LDFLAGS}
     ${MIRSERVER_LDFLAGS}
     ${PROCESS_CPP_LDFLAGS}
     ${UBUNTU_APP_LAUNCH_LDFLAGS}
