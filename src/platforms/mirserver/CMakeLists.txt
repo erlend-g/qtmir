@@ -2,8 +2,6 @@
 # And also not anymore as pkgconfig module since Qt 5.6.
 #pkg_check_modules(QT5PLATFORM_SUPPORT Qt5PlatformSupport REQUIRED)
 
-add_subdirectory(miral)
-
 # Hacks for the QPA privates monster.
 pkg_check_modules(FONTCONFIG fontconfig REQUIRED)
 
@@ -67,6 +65,7 @@ set(MIRSERVER_DEPENDANTS
     inputdeviceobserver.cpp
     mircursorimages.cpp
     mirdisplayconfigurationpolicy.cpp
+    mirdisplayconfigurationstorage.cpp
     miropenglcontext.cpp
     mirserverhooks.cpp
     mirserverintegration.cpp
@@ -117,7 +116,6 @@ add_library(qpa-mirserver SHARED
     ${CMAKE_SOURCE_DIR}/src/common/appnotifier.h
     ${CMAKE_SOURCE_DIR}/src/common/windowcontrollerinterface.h
     ${CMAKE_SOURCE_DIR}/src/common/windowmodelnotifier.h
-    $<TARGET_OBJECTS:miral-prototypes>
     # We need to run moc on these headers
 )
 
