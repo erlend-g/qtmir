@@ -23,8 +23,7 @@
 #include "promptsessionmanager.h"
 #include "setqtcompositor.h"
 
-// prototyping for later incorporation in miral
-#include <miral/persist_display_config.h>
+#include <miroil/persist_display_config.h>
 
 // miral
 #include <miral/add_init_callback.h>
@@ -82,6 +81,7 @@ std::shared_ptr<qtmir::PromptSessionManager> QMirServerPrivate::promptSessionMan
 QMirServerPrivate::QMirServerPrivate() :
     runner(qtmirArgc, qtmirArgv)
 {
+    m_DisplayConfigutaionStorage = std::make_shared<qtmir::MirDisplayConfigurationStorage>();
 }
 
 PromptSessionListener *QMirServerPrivate::promptSessionListener() const
@@ -139,7 +139,7 @@ void QMirServerPrivate::run(const std::function<void()> &startCallback)
             addInitCallback,
             qtmir::SetQtCompositor{screensModel},
             setTerminator,
-            miral::PersistDisplayConfig{&qtmir::wrapDisplayConfigurationPolicy},
+            miroil::PersistDisplayConfig(m_DisplayConfigutaionStorage, &qtmir::wrapDisplayConfigurationPolicy),
             miral::X11Support{},
         });
 }

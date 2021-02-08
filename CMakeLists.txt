@@ -76,10 +76,11 @@ find_package(Qt5Test 5.9 REQUIRED)
 find_package(Threads REQUIRED)
 
 pkg_check_modules(MIRSERVER mirserver>=0.26 REQUIRED)
-pkg_check_modules(MIRCLIENT mirclient>=0.26 REQUIRED)
+pkg_check_modules(MIRPLATFORM mirplatform REQUIRED)
+pkg_check_modules(MIROIL miroil REQUIRED)
 pkg_check_modules(MIRRENDERERGLDEV mir-renderer-gl-dev>=0.26 REQUIRED)
 pkg_check_modules(MIRAL miral>=1.1.0 REQUIRED)
-
+pkg_check_modules(MIRCORE REQUIRED)
 pkg_check_modules(XKBCOMMON xkbcommon REQUIRED)
 pkg_check_modules(GLIB glib-2.0 REQUIRED)
 pkg_check_modules(PROCESS_CPP process-cpp REQUIRED)

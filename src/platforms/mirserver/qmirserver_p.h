@@ -33,6 +33,7 @@
 #include "windowmodelnotifier.h"
 #include "sessionauthorizer.h"
 #include "mirserverhooks.h"
+#include "mirdisplayconfigurationstorage.h"
 
 //miral
 #include <miral/application_authorizer.h>
@@ -79,6 +80,7 @@ private:
     qtmir::SetSessionAuthorizer m_sessionAuthorizer;
     qtmir::OpenGLContextFactory m_openGLContextFactory;
     qtmir::MirServerHooks       m_mirServerHooks;
+    std::shared_ptr<qtmir::MirDisplayConfigurationStorage> m_DisplayConfigutaionStorage;
 
     miral::MirRunner runner;
 
