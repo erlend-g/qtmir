@@ -16,7 +16,7 @@
 
 #include "windowmanagementpolicy.h"
 
-#include "eventdispatch.h"
+#include <miroil/eventdispatch.h>
 #include "initialsurfacesizes.h"
 #include "screensmodel.h"
 #include "surfaceobserver.h"
@@ -26,6 +26,7 @@
 
 #include "mirqtconversion.h"
 #include "tracepoints.h"
+#include <miral/toolkit_event.h>
 
 namespace qtmir {
     std::shared_ptr<ExtraWindowInfo> getExtraInfo(const miral::WindowInfo &windowInfo) {
@@ -270,11 +271,11 @@ QRect WindowManagementPolicy::getConfinementRect(const QRect rect) const
 void WindowManagementPolicy::deliver_keyboard_event(const MirKeyboardEvent *event,
                                                     const miral::Window &window)
 {
-    if (mir_keyboard_event_action(event) == mir_keyboard_action_down) {
+    if (miral::toolkit::mir_keyboard_event_action(event) == mir_keyboard_action_down) {
         ensureWindowIsActive(window);
     }
 
-    dispatchInputEvent(window, mir_keyboard_event_input_event(event));
+    miroil::dispatchInputEvent(window, miral::toolkit::mir_keyboard_event_input_event(event));
 }
 
 void WindowManagementPolicy::deliver_touch_event(const MirTouchEvent *event,
@@ -282,18 +283,18 @@ void WindowManagementPolicy::deliver_touch_event(const MirTouchEvent *event,
 {
     ensureWindowIsActive(window);
 
-    dispatchInputEvent(window, mir_touch_event_input_event(event));
+    miroil::dispatchInputEvent(window, miral::toolkit::mir_touch_event_input_event(event));
 }
 
 void WindowManagementPolicy::deliver_pointer_event(const MirPointerEvent *event,
                                                    const miral::Window &window)
 {
     // Prevent mouse hover events causing window focus to change
-    if (mir_pointer_event_action(event) == mir_pointer_action_button_down) {
+    if (miral::toolkit::mir_pointer_event_action(event) == mir_pointer_action_button_down) {
         ensureWindowIsActive(window);
     }
 
-    dispatchInputEvent(window, mir_pointer_event_input_event(event));
+    miroil::dispatchInputEvent(window, miral::toolkit::mir_pointer_event_input_event(event));
 }
 
 /* Methods to allow Shell to request changes to the window stack. Called from the Qt GUI thread */

@@ -61,7 +61,6 @@ endif()
 # Files the depend on mirserver-dev
 set(MIRSERVER_DEPENDANTS
     eventbuilder.cpp
-    eventdispatch.cpp
     inputdeviceobserver.cpp
     mircursorimages.cpp
     mirdisplayconfigurationpolicy.cpp
