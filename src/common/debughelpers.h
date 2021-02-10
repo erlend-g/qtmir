@@ -20,7 +20,7 @@
 #include <QString>
 
 #include <mir_toolkit/common.h>
-#include <mir_toolkit/event.h>
+#include <miral/toolkit_event.h>
 
 class QTouchEvent;
 

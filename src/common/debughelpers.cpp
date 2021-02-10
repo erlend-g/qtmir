@@ -17,7 +17,7 @@
 #include "debughelpers.h"
 #include <QTouchEvent>
 
-#include <mir_toolkit/event.h>
+#include <miral/toolkit_event.h>
 
 // Unity API
 #include <unity/shell/application/ApplicationInfoInterface.h>
@@ -198,17 +198,17 @@ const char *applicationStateToStr(int state)
 QString mirPointerEventToString(MirPointerEvent const* event)
 {
     QString string = QStringLiteral("MirPointerEvent(x=%1,y=%2,relative_x=%3,relative_y=%4)")
-        .arg(mir_pointer_event_axis_value(event, mir_pointer_axis_x))
-        .arg(mir_pointer_event_axis_value(event, mir_pointer_axis_y))
-        .arg(mir_pointer_event_axis_value(event, mir_pointer_axis_relative_x))
-        .arg(mir_pointer_event_axis_value(event, mir_pointer_axis_relative_y));
+        .arg(miral::toolkit::mir_pointer_event_axis_value(event, mir_pointer_axis_x))
+        .arg(miral::toolkit::mir_pointer_event_axis_value(event, mir_pointer_axis_y))
+        .arg(miral::toolkit::mir_pointer_event_axis_value(event, mir_pointer_axis_relative_x))
+        .arg(miral::toolkit::mir_pointer_event_axis_value(event, mir_pointer_axis_relative_y));
 
     return string;
 }
 
 QString mirTouchEventToString(MirTouchEvent const* event)
 {
-    const int pointerCount = mir_touch_event_point_count(event);
+    const int pointerCount = miral::toolkit::mir_touch_event_point_count(event);
 
     QString string(QStringLiteral("MirTouchEvent("));
 
@@ -218,13 +218,13 @@ QString mirTouchEventToString(MirTouchEvent const* event)
             string.append(",");
         }
 
-        MirTouchAction touchAction = mir_touch_event_action(event, i);
+        MirTouchAction touchAction = miral::toolkit::mir_touch_event_action(event, i);
 
         QString touchStr = QStringLiteral("(id=%1,action=%2,x=%3,y=%4)")
-            .arg(mir_touch_event_id(event, i))
+            .arg(miral::toolkit::mir_touch_event_id(event, i))
             .arg(mirTouchActionToString(touchAction))
-            .arg(mir_touch_event_axis_value(event, i, mir_touch_axis_x))
-            .arg(mir_touch_event_axis_value(event, i, mir_touch_axis_y));
+            .arg(miral::toolkit::mir_touch_event_axis_value(event, i, mir_touch_axis_x))
+            .arg(miral::toolkit::mir_touch_event_axis_value(event, i, mir_touch_axis_y));
 
         string.append(touchStr);
     }
@@ -306,11 +306,11 @@ QString mirInputEventModifiersToString(MirInputEventModifiers modifiers)
 
 QString mirKeyboardEventToString(MirKeyboardEvent const* event)
 {
-    MirKeyboardAction keyboardAction = mir_keyboard_event_action(event);
+    MirKeyboardAction keyboardAction = miral::toolkit::mir_keyboard_event_action(event);
 
-    xkb_keysym_t keyCode = mir_keyboard_event_key_code(event);
+    xkb_keysym_t keyCode = miral::toolkit::mir_keyboard_event_key_code(event);
 
-    MirInputEventModifiers modifiers = mir_keyboard_event_modifiers(event);
+    MirInputEventModifiers modifiers = miral::toolkit::mir_keyboard_event_modifiers(event);
 
     return QStringLiteral("MirKeyboardEvent(action=%1,key_code=0x%2,modifiers=[%3])")
         .arg(mirKeyboardActionToString(keyboardAction))
