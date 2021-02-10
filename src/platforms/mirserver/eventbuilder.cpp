@@ -21,9 +21,6 @@
 // common
 #include <timestamp.h>
 
-#include <mir_toolkit/event.h>
-#include <mir_toolkit/mir_cookie.h>
-
 #include <QDebug>
 
 namespace {
@@ -154,8 +151,8 @@ mir::EventUPtr EventBuilder::makeMirEvent(QInputEvent *qtEvent, int x, int y, Mi
         }
     }
 
-    return mir::events::make_event(deviceId, timestamp, cookie, modifiers, action,
-                                   buttons, x, y, 0 /*hscroll*/, 0 /*vscroll*/, relativeX, relativeY);
+    return makeEvent(deviceId, timestamp, cookie, modifiers, action,
+                     buttons, x, y, 0 /*hscroll*/, 0 /*vscroll*/, relativeX, relativeY);
 }
 
 mir::EventUPtr EventBuilder::makeMirEvent(QWheelEvent *qtEvent)
@@ -181,10 +178,10 @@ mir::EventUPtr EventBuilder::makeMirEvent(QWheelEvent *qtEvent)
         }
     }
 
-    return mir::events::make_event(deviceId, timestamp, cookie, modifiers, mir_pointer_action_motion,
-                                   buttons, qtEvent->x(), qtEvent->y(),
-                                   mirScroll.x(), mirScroll.y(),
-                                   0, 0);
+    return makeEvent(deviceId, timestamp, cookie, modifiers, mir_pointer_action_motion,
+                     buttons, qtEvent->x(), qtEvent->y(),
+                     mirScroll.x(), mirScroll.y(),
+                     0, 0);
 }
 
 mir::EventUPtr EventBuilder::makeMirEvent(QKeyEvent *qtEvent)
@@ -216,10 +213,10 @@ mir::EventUPtr EventBuilder::makeMirEvent(QKeyEvent *qtEvent)
         }
     }
 
-    return mir::events::make_event(deviceId, uncompressTimestamp<qtmir::Timestamp>(qtmir::Timestamp(qtEvent->timestamp())),
-                           cookie, action, qtEvent->nativeVirtualKey(),
-                           qtEvent->nativeScanCode(),
-                           qtEvent->nativeModifiers());
+    return makeEvent(deviceId, uncompressTimestamp<qtmir::Timestamp>(qtmir::Timestamp(qtEvent->timestamp())),
+                     cookie, action, qtEvent->nativeVirtualKey(),
+                     qtEvent->nativeScanCode(),
+                     qtEvent->nativeModifiers());
 }
 
 mir::EventUPtr EventBuilder::makeMirEvent(Qt::KeyboardModifiers qmods,
@@ -241,8 +238,8 @@ mir::EventUPtr EventBuilder::makeMirEvent(Qt::KeyboardModifiers qmods,
     }
 
     auto modifiers = getMirModifiersFromQt(qmods);
-    auto ev = mir::events::make_event(deviceId, uncompressTimestamp<qtmir::Timestamp>(qtmir::Timestamp(qtTimestamp)),
-                                      cookie, modifiers);
+    auto ev = makeEvent(deviceId, uncompressTimestamp<qtmir::Timestamp>(qtmir::Timestamp(qtTimestamp)),
+                        cookie, modifiers);
 
     for (int i = 0; i < qtTouchPoints.count(); ++i) {
         auto touchPoint = qtTouchPoints.at(i);
@@ -262,12 +259,12 @@ mir::EventUPtr EventBuilder::makeMirEvent(Qt::KeyboardModifiers qmods,
         if (touchPoint.flags() & QTouchEvent::TouchPoint::Pen)
             tooltype = mir_touch_tooltype_stylus;
 
-        mir::events::add_touch(*ev, id, action, tooltype,
-                               touchPoint.pos().x(), touchPoint.pos().y(),
-                               touchPoint.pressure(),
-                               touchPoint.rect().width(),
-                               touchPoint.rect().height(),
-                               0 /* size */);
+        addTouch(*ev, id, action, tooltype,
+                 touchPoint.pos().x(), touchPoint.pos().y(),
+                 touchPoint.pressure(),
+                 touchPoint.rect().width(),
+                 touchPoint.rect().height(),
+                 0 /* size */);
     }
 
     return ev;
@@ -281,25 +278,4 @@ EventBuilder::EventInfo *EventBuilder::findInfo(ulong qtTimestamp)
         }
     }
     return nullptr;
-}
-
-void EventBuilder::EventInfo::store(const MirInputEvent *iev, ulong qtTimestamp)
-{
-    this->qtTimestamp = qtTimestamp;
-    deviceId = mir_input_event_get_device_id(iev);
-    if (mir_input_event_has_cookie(iev))
-    {
-        auto cookie_ptr = mir_input_event_get_cookie(iev);
-        cookie.resize(mir_cookie_buffer_size(cookie_ptr));
-        mir_cookie_to_buffer(cookie_ptr, cookie.data(), cookie.size());
-        mir_cookie_release(cookie_ptr);
-    } else {
-        cookie.resize(0);
-    }
-    if (mir_input_event_type_pointer == mir_input_event_get_type(iev))
-    {
-        auto pev = mir_input_event_get_pointer_event(iev);
-        relativeX = mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_x);
-        relativeY = mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_y);
-    }
 }

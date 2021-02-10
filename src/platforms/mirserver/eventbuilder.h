@@ -16,6 +16,7 @@
 
 #ifndef QTMIR_EVENT_REGISTRY_H
 #define QTMIR_EVENT_REGISTRY_H
+#include <miroil/eventbuilderbase.h>
 
 #include <QtGlobal>
 #include <QHoverEvent>
@@ -25,10 +26,6 @@
 #include <QTouchEvent>
 #include <QVector>
 
-#include <mir/events/event_builders.h>
-
-class MirPointerEvent;
-
 namespace qtmir {
 
 /*
@@ -37,8 +34,9 @@ namespace qtmir {
     One important feature is that it's able to match a QInputEvent with the MirInputEvent that originated it, so
     it can make a MirInputEvent version of a QInputEvent containing also information that the latter does not carry,
     such as relative axis movement for pointer devices.
- */
-class EventBuilder {
+*/
+class EventBuilder : public miroil::EventBuilderBase {
+    
 public:
     static EventBuilder *instance();
     EventBuilder();
@@ -69,15 +67,6 @@ public:
                                 const QList<QTouchEvent::TouchPoint> &qtTouchPoints,
                                 Qt::TouchPointStates /* qtTouchPointStates */,
                                 ulong qtTimestamp);
-    class EventInfo {
-    public:
-        void store(const MirInputEvent *mirInputEvent, ulong qtTimestamp);
-        ulong qtTimestamp;
-        MirInputDeviceId deviceId;
-        std::vector<uint8_t> cookie;
-        float relativeX{0};
-        float relativeY{0};
-    };
 
     EventInfo *findInfo(ulong qtTimestamp);
 
