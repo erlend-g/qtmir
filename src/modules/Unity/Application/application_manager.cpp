@@ -630,7 +630,7 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
 
     qWarning() << info->asStringList();
 
-    if (info->startsWith("maliit-server") || info->contains("qt5/libexec/QtWebProcess")) {
+    if (info->startsWith("maliit-server") || info->startsWith("/usr/bin/maliit-server") || info->contains("qt5/libexec/QtWebProcess")) {
         authorized = true;
         return;
     }

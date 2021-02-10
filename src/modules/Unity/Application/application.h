@@ -105,8 +105,8 @@ public:
     unity::shell::application::MirSurfaceListInterface* promptSurfaceList() const override;
     int surfaceCount() const override { return surfaceList()->count(); }
     void close() override;
-    bool visible() const override;
-    void setVisible(bool visible) override;
+    bool visible() const;
+    void setVisible(bool visible);
 
     ProcessState processState() const { return m_processState; }
     void setProcessState(ProcessState value);

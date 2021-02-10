@@ -142,7 +142,7 @@ bool Application::visible() const
 void Application::setVisible(bool visible)
 {
     m_visible = visible;
-    Q_EMIT visibleChanged(m_visible);
+    // Q_EMIT visibleChanged(m_visible);
 }
 
 QString Application::appId() const
