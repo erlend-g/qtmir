@@ -17,7 +17,7 @@
 #ifndef MIR_QT_EVENT_FEEDER_H
 #define MIR_QT_EVENT_FEEDER_H
 
-#include <mir_toolkit/event.h>
+#include <miral/toolkit_event.h>
 
 #include <qpa/qwindowsysteminterface.h>
 

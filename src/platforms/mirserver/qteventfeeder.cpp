@@ -507,21 +507,21 @@ QtEventFeeder::~QtEventFeeder()
 
 bool QtEventFeeder::dispatch(MirEvent const& event)
 {
-    auto type = mir_event_get_type(&event);
+    auto type = miral::toolkit::mir_event_get_type(&event);
     if (type != mir_event_type_input)
         return false;
 
-    auto iev = mir_event_get_input_event(&event);
+    auto iev = miral::toolkit::mir_event_get_input_event(&event);
 
-    switch (mir_input_event_get_type(iev)) {
+    switch (miral::toolkit::mir_input_event_get_type(iev)) {
     case mir_input_event_type_key:
-        dispatchKey(mir_input_event_get_keyboard_event(iev));
+        dispatchKey(miral::toolkit::mir_input_event_get_keyboard_event(iev));
         break;
     case mir_input_event_type_touch:
-        dispatchTouch(mir_input_event_get_touch_event(iev));
+        dispatchTouch(miral::toolkit::mir_input_event_get_touch_event(iev));
         break;
     case mir_input_event_type_pointer:
-        dispatchPointer(mir_input_event_get_pointer_event(iev));
+        dispatchPointer(miral::toolkit::mir_input_event_get_pointer_event(iev));
     default:
         break;
     }
@@ -556,15 +556,15 @@ Qt::KeyboardModifiers getQtModifiersFromMir(MirInputEventModifiers modifiers)
 Qt::MouseButtons getQtMouseButtonsfromMirPointerEvent(MirPointerEvent const* pev)
 {
     Qt::MouseButtons buttons = Qt::NoButton;
-    if (mir_pointer_event_button_state(pev, mir_pointer_button_primary))
+    if (miral::toolkit::mir_pointer_event_button_state(pev, mir_pointer_button_primary))
         buttons |= Qt::LeftButton;
-    if (mir_pointer_event_button_state(pev, mir_pointer_button_secondary))
+    if (miral::toolkit::mir_pointer_event_button_state(pev, mir_pointer_button_secondary))
         buttons |= Qt::RightButton;
-    if (mir_pointer_event_button_state(pev, mir_pointer_button_tertiary))
+    if (miral::toolkit::mir_pointer_event_button_state(pev, mir_pointer_button_tertiary))
         buttons |= Qt::MiddleButton;
-    if (mir_pointer_event_button_state(pev, mir_pointer_button_back))
+    if (miral::toolkit::mir_pointer_event_button_state(pev, mir_pointer_button_back))
         buttons |= Qt::BackButton;
-    if (mir_pointer_event_button_state(pev, mir_pointer_button_forward))
+    if (miral::toolkit::mir_pointer_event_button_state(pev, mir_pointer_button_forward))
         buttons |= Qt::ForwardButton;
 
     return buttons;
@@ -573,27 +573,27 @@ Qt::MouseButtons getQtMouseButtonsfromMirPointerEvent(MirPointerEvent const* pev
 
 void QtEventFeeder::dispatchPointer(const MirPointerEvent *pev)
 {
-    auto iev = mir_pointer_event_input_event(pev);
+    auto iev = miral::toolkit::mir_pointer_event_input_event(pev);
     auto timestamp = qtmir::compressTimestamp<qtmir::Timestamp>(
-                std::chrono::nanoseconds(mir_input_event_get_event_time(iev)));
+                std::chrono::nanoseconds(miral::toolkit::mir_input_event_get_event_time(iev)));
     EventBuilder::instance()->store(iev, timestamp.count());
-    auto action = mir_pointer_event_action(pev);
+    auto action = miral::toolkit::mir_pointer_event_action(pev);
     qCDebug(QTMIR_MIR_INPUT) << "Received" << qPrintable(mirPointerEventToString(pev));
 
-    auto modifiers = getQtModifiersFromMir(mir_pointer_event_modifiers(pev));
+    auto modifiers = getQtModifiersFromMir(miral::toolkit::mir_pointer_event_modifiers(pev));
 
-    auto relative = QPointF(mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_x),
-                            mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_y));
-    auto absolute = QPointF(mir_pointer_event_axis_value(pev, mir_pointer_axis_x),
-                            mir_pointer_event_axis_value(pev, mir_pointer_axis_y));
+    auto relative = QPointF(miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_x),
+                            miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_relative_y));
+    auto absolute = QPointF(miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_x),
+                            miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_y));
 
     switch (action) {
     case mir_pointer_action_button_up:
     case mir_pointer_action_button_down:
     case mir_pointer_action_motion:
     {
-        const float hDelta = mir_pointer_event_axis_value(pev, mir_pointer_axis_hscroll);
-        const float vDelta = mir_pointer_event_axis_value(pev, mir_pointer_axis_vscroll);
+        const float hDelta = miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_hscroll);
+        const float vDelta = miral::toolkit::mir_pointer_event_axis_value(pev, mir_pointer_axis_vscroll);
 
         if (hDelta != 0 || vDelta != 0) {
             // QWheelEvent::DefaultDeltasPerStep = 120 but not defined on vivid
@@ -611,21 +611,21 @@ void QtEventFeeder::dispatchPointer(const MirPointerEvent *pev)
 
 void QtEventFeeder::dispatchKey(const MirKeyboardEvent *kev)
 {
-    auto iev = mir_keyboard_event_input_event(kev);
+    auto iev = miral::toolkit::mir_keyboard_event_input_event(kev);
     auto timestamp = qtmir::compressTimestamp<qtmir::Timestamp>(
-                std::chrono::nanoseconds(mir_input_event_get_event_time(iev)));
+                std::chrono::nanoseconds(miral::toolkit::mir_input_event_get_event_time(iev)));
     EventBuilder::instance()->store(iev, timestamp.count());
 
-    xkb_keysym_t xk_sym = mir_keyboard_event_key_code(kev);
+    xkb_keysym_t xk_sym = miral::toolkit::mir_keyboard_event_key_code(kev);
 
     // Key modifier and unicode index mapping.
-    auto modifiers = getQtModifiersFromMir(mir_keyboard_event_modifiers(kev));
+    auto modifiers = getQtModifiersFromMir(miral::toolkit::mir_keyboard_event_modifiers(kev));
 
     // Key action
     QEvent::Type keyType = QEvent::KeyRelease;
     bool is_auto_rep = false;
 
-    switch (mir_keyboard_event_action(kev))
+    switch (miral::toolkit::mir_keyboard_event_action(kev))
     {
     case mir_keyboard_action_repeat:
         is_auto_rep = true; // fall-through
@@ -656,15 +656,15 @@ void QtEventFeeder::dispatchKey(const MirKeyboardEvent *kev)
 
     mQtWindowSystem->handleExtendedKeyEvent(mQtWindowSystem->focusedWindow(),
         timestamp.count(), keyType, keyCode, modifiers,
-        mir_keyboard_event_scan_code(kev), xk_sym,
-        mir_keyboard_event_modifiers(kev), text, is_auto_rep);
+        miral::toolkit::mir_keyboard_event_scan_code(kev), xk_sym,
+        miral::toolkit::mir_keyboard_event_modifiers(kev), text, is_auto_rep);
 }
 
 void QtEventFeeder::dispatchTouch(const MirTouchEvent *tev)
 {
-    auto iev = mir_touch_event_input_event(tev);
+    auto iev = miral::toolkit::mir_touch_event_input_event(tev);
     auto timestamp = qtmir::compressTimestamp<qtmir::Timestamp>(
-                std::chrono::nanoseconds(mir_input_event_get_event_time(iev)));
+                std::chrono::nanoseconds(miral::toolkit::mir_input_event_get_event_time(iev)));
     EventBuilder::instance()->store(iev, timestamp.count());
 
     tracepoint(qtmirserver, touchEventDispatch_start, std::chrono::nanoseconds(timestamp).count());
@@ -674,14 +674,14 @@ void QtEventFeeder::dispatchTouch(const MirTouchEvent *tev)
     // FIXME(loicm) Max pressure is device specific. That one is for the Samsung Galaxy Nexus. That
     //     needs to be fixed as soon as the compat input lib adds query support.
     const float kMaxPressure = 1.28;
-    const int kPointerCount = mir_touch_event_point_count(tev);
+    const int kPointerCount = miral::toolkit::mir_touch_event_point_count(tev);
     QList<QWindowSystemInterface::TouchPoint> touchPoints;
     QWindow *window = nullptr;
 
     if (kPointerCount > 0) {
         window = mQtWindowSystem->getWindowForTouchPoint(
-                    QPoint(mir_touch_event_axis_value(tev, 0, mir_touch_axis_x),
-                           mir_touch_event_axis_value(tev, 0, mir_touch_axis_y)));
+                    QPoint(miral::toolkit::mir_touch_event_axis_value(tev, 0, mir_touch_axis_x),
+                           miral::toolkit::mir_touch_event_axis_value(tev, 0, mir_touch_axis_y)));
 
         if (!window) {
             qCDebug(QTMIR_MIR_INPUT) << "REJECTING INPUT EVENT, no matching window";
@@ -695,17 +695,17 @@ void QtEventFeeder::dispatchTouch(const MirTouchEvent *tev)
         for (int i = 0; i < kPointerCount; ++i) {
             QWindowSystemInterface::TouchPoint touchPoint;
 
-            const float kX = mir_touch_event_axis_value(tev, i, mir_touch_axis_x);
-            const float kY = mir_touch_event_axis_value(tev, i, mir_touch_axis_y);
-            const float kW = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_major);
-            const float kH = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_minor);
-            const float kP = mir_touch_event_axis_value(tev, i, mir_touch_axis_pressure);
-            touchPoint.id = mir_touch_event_id(tev, i);
+            const float kX = miral::toolkit::mir_touch_event_axis_value(tev, i, mir_touch_axis_x);
+            const float kY = miral::toolkit::mir_touch_event_axis_value(tev, i, mir_touch_axis_y);
+            const float kW = miral::toolkit::mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_major);
+            const float kH = miral::toolkit::mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_minor);
+            const float kP = miral::toolkit::mir_touch_event_axis_value(tev, i, mir_touch_axis_pressure);
+            touchPoint.id = miral::toolkit::mir_touch_event_id(tev, i);
 
             touchPoint.normalPosition = QPointF(kX / kWindowGeometry.width(), kY / kWindowGeometry.height());
             touchPoint.area = QRectF(kX - (kW / 2.0), kY - (kH / 2.0), kW, kH);
             touchPoint.pressure = kP / kMaxPressure;
-            switch (mir_touch_event_action(tev, i))
+            switch (miral::toolkit::mir_touch_event_action(tev, i))
             {
             case mir_touch_action_up:
                 touchPoint.state = Qt::TouchPointReleased;
