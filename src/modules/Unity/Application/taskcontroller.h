@@ -110,7 +110,7 @@ protected:
 
 private:
     void connectToAppNotifier(AppNotifier *);
-    void connectToPromptSessionListener(miroil::PromptSessionListener *);
+    void connectToPromptSessionListener(qtmir::PromptSessionListener *);
 
     std::shared_ptr<miroil::PromptSessionManager> m_promptSessionManager;
 
