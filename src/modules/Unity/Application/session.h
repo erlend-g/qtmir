@@ -23,16 +23,16 @@
 // local
 #include "session_interface.h"
 #include "mirsurfacelistmodel.h"
-#include "promptsessionmanager.h"
 #include "timer.h"
+
+// mir
+#include <miroil/promptsessionmanager.h>
 
 // Qt
 #include <QObject>
 
 
 namespace qtmir {
-
-class PromptSessionManager;
 
 class Application;
 
@@ -41,7 +41,7 @@ class Session : public SessionInterface
     Q_OBJECT
 public:
     explicit Session(const std::shared_ptr<mir::scene::Session>& session,
-                     const std::shared_ptr<PromptSessionManager>& promptSessionManager,
+                     const std::shared_ptr<miroil::PromptSessionManager>& promptSessionManager,
                      QObject *parent = 0);
     virtual ~Session();
 
@@ -77,15 +77,15 @@ public:
 
     std::shared_ptr<mir::scene::Session> session() const override;
 
-    PromptSession activePromptSession() const override;
-    void foreachPromptSession(const std::function<void(const PromptSession&)> &f) const override;
+    miroil::PromptSession activePromptSession() const override;
+    void foreachPromptSession(const std::function<void(const miroil::PromptSession&)> &f) const override;
 
     SessionModel* childSessions() const override;
 
     void setFullscreen(bool fullscreen) override;
     void setLive(const bool) override;
-    void appendPromptSession(const PromptSession& session) override;
-    void removePromptSession(const PromptSession& session) override;
+    void appendPromptSession(const miroil::PromptSession& session) override;
+    void removePromptSession(const miroil::PromptSession& session) override;
 
     // useful for tests
     void setSuspendTimer(AbstractTimer *timer);
@@ -118,8 +118,8 @@ protected:
     State m_state;
     bool m_live;
     AbstractTimer* m_suspendTimer{nullptr};
-    QVector<PromptSession> m_promptSessions;
-    std::shared_ptr<PromptSessionManager> const m_promptSessionManager;
+    QVector<miroil::PromptSession> m_promptSessions;
+    std::shared_ptr<miroil::PromptSessionManager> const m_promptSessionManager;
     QList<MirSurfaceInterface*> m_closingSurfaces;
     bool m_hadSurface{false};
 };

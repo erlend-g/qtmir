@@ -20,13 +20,13 @@
 #include "session.h"
 #include "mirsurfaceinterface.h"
 #include "mirsurfaceitem.h"
-#include "promptsession.h"
 
 // mirserver
 #include "logging.h"
 
 // miral
 #include <miral/application.h>
+#include <miroil/promptsession.h>
 
 // Qt
 #include <QPainter>
@@ -64,7 +64,7 @@ const char *sessionStateToString(SessionInterface::State state)
 }
 
 Session::Session(const std::shared_ptr<ms::Session>& session,
-                 const std::shared_ptr<PromptSessionManager>& promptSessionManager,
+                 const std::shared_ptr<miroil::PromptSessionManager>& promptSessionManager,
                  QObject *parent)
     : SessionInterface(parent)
     , m_session(session)
@@ -301,7 +301,7 @@ void Session::suspend()
         miral::apply_lifecycle_state_to(session(), mir_lifecycle_state_will_suspend);
         m_suspendTimer->start();
 
-        foreachPromptSession([this](const qtmir::PromptSession &promptSession) {
+        foreachPromptSession([this](const miroil::PromptSession &promptSession) {
             m_promptSessionManager->suspendPromptSession(promptSession);
         });
 
@@ -333,7 +333,7 @@ void Session::doResume()
 
     miral::apply_lifecycle_state_to(session(), mir_lifecycle_state_resumed);
 
-    foreachPromptSession([this](const qtmir::PromptSession &promptSession) {
+    foreachPromptSession([this](const miroil::PromptSession &promptSession) {
         m_promptSessionManager->resumePromptSession(promptSession);
     });
 
@@ -467,14 +467,14 @@ SessionModel* Session::childSessions() const
     return m_children;
 }
 
-void Session::appendPromptSession(const qtmir::PromptSession &promptSession)
+void Session::appendPromptSession(const miroil::PromptSession &promptSession)
 {
     DEBUG_MSG << "(promptSession=" << promptSession.get() << ")";
 
     m_promptSessions.append(promptSession);
 }
 
-void Session::removePromptSession(const qtmir::PromptSession &promptSession)
+void Session::removePromptSession(const miroil::PromptSession &promptSession)
 {
     DEBUG_MSG << "(promptSession=" << promptSession.get() << ")";
 
@@ -488,26 +488,26 @@ void Session::stopPromptSessions()
         static_cast<Session*>(child)->stopPromptSessions();
     }
 
-    QVector<qtmir::PromptSession> copy(m_promptSessions);
-    QVectorIterator<qtmir::PromptSession> it(copy);
+    QVector<miroil::PromptSession> copy(m_promptSessions);
+    QVectorIterator<miroil::PromptSession> it(copy);
     for ( it.toBack(); it.hasPrevious(); ) {
-        qtmir::PromptSession promptSession = it.previous();
+        miroil::PromptSession promptSession = it.previous();
         DEBUG_MSG << " - promptSession=" << promptSession.get();
 
         m_promptSessionManager->stopPromptSession(promptSession);
     }
 }
 
-qtmir::PromptSession Session::activePromptSession() const
+miroil::PromptSession Session::activePromptSession() const
 {
     if (m_promptSessions.count() > 0)
         return m_promptSessions.back();
     return {};
 }
 
-void Session::foreachPromptSession(const std::function<void(const qtmir::PromptSession&)>& f) const
+void Session::foreachPromptSession(const std::function<void(const miroil::PromptSession&)>& f) const
 {
-    Q_FOREACH (qtmir::PromptSession promptSession, m_promptSessions) {
+    Q_FOREACH (miroil::PromptSession promptSession, m_promptSessions) {
         f(promptSession);
     }
 }

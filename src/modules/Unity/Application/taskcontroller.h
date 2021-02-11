@@ -29,7 +29,7 @@
 #include <miral/application_info.h>
 
 // mirserver
-#include "promptsessionmanager.h"
+#include <miroil/promptsessionmanager.h>
 
 namespace mir {
     namespace scene {
@@ -46,13 +46,12 @@ namespace unity {
     }
 }
 
-class PromptSessionListener;
-
 namespace qtmir
 {
 
 class AppNotifier;
 class ApplicationInfo;
+class PromptSessionListener;
 class SessionInterface;
 
 class TaskController : public QObject
@@ -100,20 +99,20 @@ public Q_SLOTS:
     void onSessionStarting(const miral::ApplicationInfo &appInfo);
     void onSessionStopping(const miral::ApplicationInfo &appInfo);
 
-    void onPromptSessionStarting(const PromptSession& promptSession);
-    void onPromptSessionStopping(const PromptSession& promptSession);
-    void onPromptProviderAdded(const qtmir::PromptSession &promptSession, const miral::Application &);
-    void onPromptProviderRemoved(const qtmir::PromptSession &promptSession, const miral::Application &);
+    void onPromptSessionStarting(const miroil::PromptSession& promptSession);
+    void onPromptSessionStopping(const miroil::PromptSession& promptSession);
+    void onPromptProviderAdded(const miroil::PromptSession &promptSession, const miral::Application &);
+    void onPromptProviderRemoved(const miroil::PromptSession &promptSession, const miral::Application &);
 
 protected:
     TaskController(QObject *parent = nullptr);
-    TaskController(std::shared_ptr<PromptSessionManager>&, QObject *parent = nullptr);
+    TaskController(std::shared_ptr<miroil::PromptSessionManager>&, QObject *parent = nullptr);
 
 private:
     void connectToAppNotifier(AppNotifier *);
-    void connectToPromptSessionListener(PromptSessionListener *);
+    void connectToPromptSessionListener(miroil::PromptSessionListener *);
 
-    std::shared_ptr<PromptSessionManager> m_promptSessionManager;
+    std::shared_ptr<miroil::PromptSessionManager> m_promptSessionManager;
 
     QHash<const mir::scene::PromptSession *, SessionInterface *> m_mirPromptToSessionHash;
     QList<SessionInterface*> m_sessionList;

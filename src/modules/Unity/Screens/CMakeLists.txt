@@ -4,6 +4,7 @@ include_directories(
 
 include_directories(
     SYSTEM
+    ${MIRCORE_INCLUDE_DIRS}
     ${MIRCLIENT_INCLUDE_DIRS}
     ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
     ${Qt5Quick_INCLUDE_DIRS}

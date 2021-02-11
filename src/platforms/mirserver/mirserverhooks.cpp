@@ -30,7 +30,7 @@ namespace ms = mir::scene;
 namespace qtmir {
     
 MirServerHooks::MirServerHooks()
-    : miroil::MirServerHooks(&PromptSessionListener::create)
+    : miroil::MirServerHooksBase(&PromptSessionListener::create)
 {
 }
 

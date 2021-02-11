@@ -18,7 +18,7 @@
 
 #ifndef QTMIR_MIRSERVERHOOKS_H
 #define QTMIR_MIRSERVERHOOKS_H
-#include "miroil/mirserverhooks.h"
+#include <miroil/mirserverhooksbase.h>
 #include <memory>
 #include <QSharedPointer>
 
@@ -27,7 +27,7 @@ class ScreensModel;
 
 namespace qtmir
 {
-class MirServerHooks : public miroil::MirServerHooks
+class MirServerHooks : public miroil::MirServerHooksBase
 {
 public:
     MirServerHooks();

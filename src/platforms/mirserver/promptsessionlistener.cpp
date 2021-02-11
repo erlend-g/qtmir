@@ -19,11 +19,13 @@
 
 namespace ms = mir::scene;
 
+namespace qtmir {
+
 PromptSessionListener::PromptSessionListener(QObject *parent) :
     QObject(parent)
 {
     qCDebug(QTMIR_MIR_MESSAGES) << "PromptSessionListener::PromptSessionListener - this=" << this;
-    qRegisterMetaType<qtmir::PromptSession>("qtmir::PromptSession");
+    qRegisterMetaType<miroil::PromptSession>("qtmir::PromptSession");
     qRegisterMetaType<miral::Application>("miral::Application");
 }
 
@@ -81,5 +83,5 @@ void PromptSessionListener::prompt_provider_removed(ms::PromptSession const& pro
     Q_EMIT promptProviderRemoved(m_mirPromptToSessionHash[&prompt_session], prompt_provider);
 }
 
-
+}
 

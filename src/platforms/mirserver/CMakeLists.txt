@@ -68,7 +68,6 @@ set(MIRSERVER_DEPENDANTS
     mirserverhooks.cpp
     mirserverintegration.cpp
     openglcontextfactory.cpp
-    promptsessionmanager.cpp
     qmirserver.cpp
     qmirserver_p.cpp
     qteventfeeder.cpp
