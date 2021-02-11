@@ -14,9 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <mir/input/device.h>
-#include <mir/input/mir_keyboard_config.h>
-
 #include <Qt>
 #include <QTimer>
 
@@ -66,25 +63,37 @@ void MirInputDeviceObserver::applyKeymap(const std::shared_ptr<mi::Device> &devi
             variant = stringList.at(1);
         }
 
-        qCDebug(QTMIR_MIR_KEYMAP) << "Applying keymap" <<  layout << variant << "on" << device->id() << QString::fromStdString(device->name());
-        MirKeyboardConfig oldConfig;
-        mi::Keymap keymap;
-        if (device->keyboard_configuration().is_set()) { // preserve the model and options
-            oldConfig = device->keyboard_configuration().value();
-            keymap.model = oldConfig.device_keymap().model;
-            keymap.options = oldConfig.device_keymap().options;
-        }
-        keymap.layout = layout.toStdString();
-        keymap.variant = variant.toStdString();
+        qCDebug(QTMIR_MIR_KEYMAP) << "Applying keymap" <<  layout << variant << "on" << getDeviceID(device) << QString::fromStdString(getDeviceName(device));
 
         try
         {
-            device->apply_keyboard_configuration(std::move(keymap));
+            InputDeviceObserver::applyKeymap(device, layout.toStdString(), variant.toStdString());
             qCDebug(QTMIR_MIR_KEYMAP) << "Keymap applied";
         }
         catch(std::exception const& e)
         {
             qCWarning(QTMIR_MIR_KEYMAP) << "Keymap could not be applied:" << e.what();
         }
+    }
+}
+
+void MirInputDeviceObserver::device_added(const std::shared_ptr<mir::input::Device> &device)
+{
+    QMutexLocker locker(&m_mutex);  // lock so that Qt and Mir don't apply the keymap at the same time
+    
+    if (isKeyboard(device) && isAlphaNumeric(device)) {
+        qCDebug(QTMIR_MIR_KEYMAP) << "Device added" << getDeviceID(device);
+        m_devices.append(device);
+        applyKeymap(device);
+    }
+}
+
+void MirInputDeviceObserver::device_removed(const std::shared_ptr<mir::input::Device> &device)
+{
+    QMutexLocker locker(&m_mutex);  // lock so that Qt and Mir don't apply the keymap at the same time
+
+    if (m_devices.contains(device)) {
+        qCDebug(QTMIR_MIR_KEYMAP) << "Device removed" << getDeviceID(device);
+        m_devices.removeAll(device);
     }
 }

@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROMPTSESSIONLISTENER_H
-#define PROMPTSESSIONLISTENER_H
+#ifndef QTMIR_PROMPTSESSIONLISTENER_H
+#define QTMIR_PROMPTSESSIONLISTENER_H
+#include <memory>
 
 // Qt
 #include <QHash>
@@ -24,15 +25,28 @@
 #include "promptsession.h"
 
 #include <miral/application.h>
+#include <miroil/promptsessionlistener.h>
 
-class PromptSessionListener : public QObject
+class PromptSessionListener : public QObject, public miroil::PromptSessionListener
 {
 Q_OBJECT
-protected:
+public:
     explicit PromptSessionListener(QObject *parent = 0);
     ~PromptSessionListener();
 
-public:
+    // PromptSessionListener functions    
+    void starting(std::shared_ptr<mir::scene::PromptSession> const& prompt_session) override;
+    void stopping(std::shared_ptr<mir::scene::PromptSession> const& prompt_session) override;
+    void suspending(std::shared_ptr<mir::scene::PromptSession> const& prompt_session) override;
+    void resuming(std::shared_ptr<mir::scene::PromptSession> const& prompt_session) override;
+    void prompt_provider_added(mir::scene::PromptSession const& prompt_session,
+                               std::shared_ptr<mir::scene::Session> const& prompt_provider) override;
+    void prompt_provider_removed(mir::scene::PromptSession const& prompt_session,
+                                 std::shared_ptr<mir::scene::Session> const& prompt_provider) override;
+    
+    // creator new instance
+    static std::shared_ptr<miroil::PromptSessionListener> create();
+    
 Q_SIGNALS:
     void promptSessionStarting(qtmir::PromptSession const &session);
     void promptSessionStopping(qtmir::PromptSession const &session);
@@ -40,10 +54,13 @@ Q_SIGNALS:
     void promptSessionResuming(qtmir::PromptSession const &session);
 
     void promptProviderAdded(qtmir::PromptSession const&, miral::Application const&);
-    void promptProviderRemoved(qtmir::PromptSession const&, miral::Application const&);
+    void promptProviderRemoved(qtmir::PromptSession const&, miral::Application const&);    
+    
+private:
+    QHash<const mir::scene::PromptSession *, qtmir::PromptSession> m_mirPromptToSessionHash;
 };
 
 Q_DECLARE_METATYPE(qtmir::PromptSession)
 Q_DECLARE_METATYPE(miral::Application)
 
-#endif // SESSIONLISTENER_H
+#endif // QTMIR_PROMPTSESSIONLISTENER_H

@@ -16,42 +16,24 @@
  * Authored by: Alan Griffiths <alan@octopull.co.uk>
  */
 
-#ifndef MIRAL_MIRSERVERHOOKS_H
-#define MIRAL_MIRSERVERHOOKS_H
-
+#ifndef QTMIR_MIRSERVERHOOKS_H
+#define QTMIR_MIRSERVERHOOKS_H
+#include "miroil/mirserverhooks.h"
 #include <memory>
 #include <QSharedPointer>
 
-namespace mir { class Server; }
-namespace mir { namespace scene { class PromptSessionManager; }}
-namespace mir { namespace graphics { class Display; }}
-namespace mir { namespace input { class InputDeviceHub; } }
-
-class PromptSessionListener;
 class ScreensController;
 class ScreensModel;
 
 namespace qtmir
 {
-class MirServerHooks
+class MirServerHooks : public miroil::MirServerHooks
 {
 public:
     MirServerHooks();
 
-    void operator()(mir::Server& server);
-
-    PromptSessionListener *promptSessionListener() const;
-    std::shared_ptr<mir::scene::PromptSessionManager> thePromptSessionManager() const;
-    std::shared_ptr<mir::graphics::Display> theMirDisplay() const;
-    std::shared_ptr<mir::input::InputDeviceHub> theInputDeviceHub() const;
-
     QSharedPointer<ScreensController> createScreensController(QSharedPointer<ScreensModel> const &screensModel) const;
-    void createInputDeviceObserver();
-
-private:
-    struct Self;
-    std::shared_ptr<Self> self;
 };
 }
 
-#endif //MIRAL_MIRSERVERHOOKS_H
+#endif //QTMIR_MIRSERVERHOOKS_H

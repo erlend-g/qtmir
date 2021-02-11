@@ -62,7 +62,6 @@ endif()
 set(MIRSERVER_DEPENDANTS
     eventbuilder.cpp
     inputdeviceobserver.cpp
-    mircursorimages.cpp
     mirdisplayconfigurationpolicy.cpp
     mirdisplayconfigurationstorage.cpp
     miropenglcontext.cpp
@@ -89,7 +88,6 @@ add_library(qpa-mirserver SHARED
     ${CLIPBOARD_SRC}
     cursor.cpp
     initialsurfacesizes.cpp
-    inputdeviceobserver.cpp
     logging.cpp
     mirsingleton.cpp
     nativeinterface.cpp
