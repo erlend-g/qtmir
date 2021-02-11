@@ -49,7 +49,7 @@ MirOpenGLContext::MirOpenGLContext(
 {
     // create a temporary GL context to fetch the EGL display and config, so Qt can determine the surface format
     std::unique_ptr<mir::renderer::gl::Context> mirContext = dynamic_cast<mir::renderer::gl::ContextSource*>(
-                                                                display.native_display())->create_gl_context();
+                                                                &display)->create_gl_context();
     mirContext->make_current();
 
     EGLDisplay eglDisplay = eglGetCurrentDisplay();
