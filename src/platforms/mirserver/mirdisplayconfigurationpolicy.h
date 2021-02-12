@@ -20,12 +20,13 @@
 #include <memory>
 
 namespace mir { namespace graphics { class DisplayConfigurationPolicy; }}
+namespace miroil { class DisplayConfigurationPolicy; }
 
 namespace qtmir
 {
 
 auto wrapDisplayConfigurationPolicy(const std::shared_ptr<mir::graphics::DisplayConfigurationPolicy> &wrapped)
--> std::shared_ptr<mir::graphics::DisplayConfigurationPolicy>;
+-> std::shared_ptr<miroil::DisplayConfigurationPolicy>;
 }
 
 

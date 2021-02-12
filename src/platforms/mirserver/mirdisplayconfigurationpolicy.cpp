@@ -19,7 +19,7 @@
 #include <mir/graphics/display_configuration_policy.h>
 #include <mir/graphics/display_configuration.h>
 #include <mir/geometry/point.h>
-#include <mir/server.h>
+#include <miroil/display_configuration_policy.h>
 
 #include <qglobal.h>
 #include <QByteArray>
@@ -30,7 +30,7 @@ namespace mg = mir::graphics;
 #define DEFAULT_GRID_UNIT_PX 8
 
 namespace {
-class MirDisplayConfigurationPolicy : public mir::graphics::DisplayConfigurationPolicy
+class MirDisplayConfigurationPolicy : public miroil::DisplayConfigurationPolicy
 {
 public:
     MirDisplayConfigurationPolicy(const std::shared_ptr<mir::graphics::DisplayConfigurationPolicy> &wrapped);
@@ -116,7 +116,7 @@ void MirDisplayConfigurationPolicy::apply_to(mg::DisplayConfiguration &conf)
 } //namespace
 
 auto qtmir::wrapDisplayConfigurationPolicy(const std::shared_ptr<mg::DisplayConfigurationPolicy>& wrapped)
--> std::shared_ptr<mg::DisplayConfigurationPolicy>
+-> std::shared_ptr<miroil::DisplayConfigurationPolicy>
 {
     return std::make_shared<MirDisplayConfigurationPolicy>(wrapped);
 }
