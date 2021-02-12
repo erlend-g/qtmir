@@ -372,7 +372,7 @@ void WindowManagementPolicy::ask_client_to_close(const miral::Window &window)
 void WindowManagementPolicy::forceClose(const miral::Window &window)
 {
     tools.invoke_under_lock([&window, this]() {
-        tools.force_close(window);
+        tools.ask_client_to_close(window);
     });
 }
 
