@@ -23,12 +23,13 @@
 #include "miropenglcontext.h"
 #include "windowmanagementpolicy.h"
 #include "promptsessionlistener.h"
-#include "setqtcompositor.h"
 #include "screenscontroller.h"
 #include "mirglconfig.h"
+#include "qtcompositor.h"
 
 #include <miroil/promptsessionmanager.h>
 #include <miroil/persist_display_config.h>
+#include <miroil/setcompositor.h>
 
 // miral
 #include <miral/add_init_callback.h>
@@ -155,7 +156,26 @@ void QMirServerPrivate::run(const std::function<void()> &startCallback)
             miral::set_window_management_policy<WindowManagementPolicy>(m_windowModelNotifier, m_windowController,
                     m_appNotifier, screensModel),
             addInitCallback,
-            qtmir::SetQtCompositor{screensModel},
+            miroil::SetCompositor(
+                // Create the the QtCompositor 
+                    [this]()
+                    -> std::shared_ptr<miroil::Compositor>
+                {
+                    std::shared_ptr<miroil::Compositor> result = std::make_shared<QtCompositor>();
+                    return result;
+                }
+                ,
+                // Initialization called by mir when the new compositor is setup up              
+                    [this](const std::shared_ptr<mir::graphics::Display>& display,
+                           const std::shared_ptr<miroil::Compositor> & compositor,
+                           const std::shared_ptr<mir::compositor::DisplayListener>& displayListener)
+                {
+                    
+                    std::shared_ptr<QtCompositor> qtCompsitor = std::dynamic_pointer_cast<QtCompositor>(compositor);
+                    
+                    this->screensModel->init(display, qtCompsitor, displayListener);
+                }
+            ),
             setTerminator,
             miroil::PersistDisplayConfig(m_DisplayConfigutaionStorage, &qtmir::wrapDisplayConfigurationPolicy),
             miral::X11Support{},

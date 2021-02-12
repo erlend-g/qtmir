@@ -73,7 +73,6 @@ set(MIRSERVER_DEPENDANTS
     screenscontroller.cpp
     screensmodel.cpp
     screenwindow.cpp
-    setqtcompositor.cpp
     )
 
 if(WITH_CONTENTHUB)

@@ -15,4 +15,20 @@
  */
 
 #include "qtcompositor.h"
+#include "logging.h"
+
+void QtCompositor::start()
+{
+    qCDebug(QTMIR_SCREENS) << "QtCompositor::start";
+
+    Q_EMIT starting(); // blocks
+}
+
+void QtCompositor::stop()
+{
+    qCDebug(QTMIR_SCREENS) << "QtCompositor::stop";
+
+    Q_EMIT stopping(); // blocks
+}
+
 

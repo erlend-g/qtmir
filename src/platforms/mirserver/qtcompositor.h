@@ -16,6 +16,7 @@
 
 #ifndef QTCOMPOSITOR_H
 #define QTCOMPOSITOR_H
+#include <miroil/compositor.h>
 
 // std lib
 #include <memory>
@@ -29,12 +30,16 @@ namespace mir {
     }
 }
 
-class QtCompositor : public QObject
+class QtCompositor : public QObject, public miroil::Compositor
 {
     Q_OBJECT
 public:
     QtCompositor() = default;
     virtual ~QtCompositor() noexcept = default;
+
+    // Callbacks comming from mir    
+    void start();
+    void stop();
 
 Q_SIGNALS:
     void starting();
