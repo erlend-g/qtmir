@@ -23,9 +23,10 @@
 
 #include <memory>
 
-// qtmir
-namespace qtmir { class PromptSessionManager; }
+// miroil
+#include <miroil/promptsessionmanager.h>
 
+// qtmir
 class QMirServerPrivate;
 class ScreensController;
 class ScreensModel;
@@ -47,7 +48,7 @@ public:
     QSharedPointer<ScreensModel> screensModel() const;
     QPlatformOpenGLContext *createPlatformOpenGLContext(QOpenGLContext *context) const;
     void *nativeResourceForIntegration(const QByteArray &resource) const;
-    std::shared_ptr<qtmir::PromptSessionManager> thePromptSessionManager() const;
+    std::shared_ptr<miroil::PromptSessionManager> thePromptSessionManager() const;
 
 Q_SIGNALS:
     void started();

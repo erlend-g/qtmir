@@ -87,9 +87,9 @@ QPlatformOpenGLContext *QMirServerPrivate::createPlatformOpenGLContext(QOpenGLCo
     
 }
 
-std::shared_ptr<qtmir::PromptSessionManager> QMirServerPrivate::promptSessionManager() const
+std::shared_ptr<miroil::PromptSessionManager> QMirServerPrivate::promptSessionManager() const
 {
-    return std::make_shared<qtmir::PromptSessionManager>(m_mirServerHooks.thePromptSessionManager());
+    return std::make_shared<miroil::PromptSessionManager>(m_mirServerHooks.thePromptSessionManager());
 }
 
 QMirServerPrivate::QMirServerPrivate() :

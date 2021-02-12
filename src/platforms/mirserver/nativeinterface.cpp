@@ -113,7 +113,7 @@ void NativeInterface::setWindowProperty(QPlatformWindow */*window*/, const QStri
     }
 }
 
-std::shared_ptr<qtmir::PromptSessionManager> NativeInterface::thePromptSessionManager() const
+std::shared_ptr<miroil::PromptSessionManager> NativeInterface::thePromptSessionManager() const
 {
     return m_qMirServer->thePromptSessionManager();
 }
