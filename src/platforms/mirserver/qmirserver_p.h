@@ -27,17 +27,21 @@
 
 // local
 #include "appnotifier.h"
-#include "openglcontextfactory.h"
 #include "screensmodel.h"
 #include "windowcontroller.h"
 #include "windowmodelnotifier.h"
+#include "screenscontroller.h"
 #include "sessionauthorizer.h"
-#include "mirserverhooks.h"
 #include "mirdisplayconfigurationstorage.h"
 
 //miral
 #include <miral/application_authorizer.h>
 #include <miral/runner.h>
+
+// miroil
+#include <miroil/mirserverhooks.h>
+#include <miroil/promptsessionmanager.h>
+#include <miroil/openglcontextfactory.h>
 
 class MirServerThread;
 class QOpenGLContext;
@@ -45,7 +49,6 @@ class QOpenGLContext;
 namespace qtmir
 {
 using SetSessionAuthorizer = miral::SetApplicationAuthorizer<SessionAuthorizer>;
-class PromptSessionManager;
 class PromptSessionListener;
 }
 
@@ -63,7 +66,7 @@ public:
     void stop();
 
     qtmir::PromptSessionListener *promptSessionListener() const;
-    std::shared_ptr<qtmir::PromptSessionManager> promptSessionManager() const;
+    std::shared_ptr<miroil::PromptSessionManager> promptSessionManager() const;
 
     std::shared_ptr<SessionAuthorizer> theApplicationAuthorizer() const
         { return m_sessionAuthorizer.the_custom_application_authorizer(); }
@@ -78,9 +81,9 @@ public:
         { return &m_windowController; }
 
 private:
-    qtmir::SetSessionAuthorizer m_sessionAuthorizer;
-    qtmir::OpenGLContextFactory m_openGLContextFactory;
-    qtmir::MirServerHooks       m_mirServerHooks;
+    qtmir::SetSessionAuthorizer  m_sessionAuthorizer;
+    miroil::MirServerHooks       m_mirServerHooks;
+    miroil::OpenGLContextFactory m_openGLContextFactory;    
     std::shared_ptr<qtmir::MirDisplayConfigurationStorage> m_DisplayConfigutaionStorage;
 
     miral::MirRunner runner;

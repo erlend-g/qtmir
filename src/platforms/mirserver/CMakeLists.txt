@@ -65,9 +65,7 @@ set(MIRSERVER_DEPENDANTS
     mirdisplayconfigurationpolicy.cpp
     mirdisplayconfigurationstorage.cpp
     miropenglcontext.cpp
-    mirserverhooks.cpp
     mirserverintegration.cpp
-    openglcontextfactory.cpp
     qmirserver.cpp
     qmirserver_p.cpp
     qteventfeeder.cpp
