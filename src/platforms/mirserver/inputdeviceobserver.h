@@ -28,7 +28,7 @@ namespace mir { namespace input { class Device; }}
 
 namespace qtmir {
 
-class MirInputDeviceObserver: public QObject, miroil::InputDeviceObserver
+class MirInputDeviceObserver: public QObject, public miroil::InputDeviceObserver
 {
     Q_OBJECT
 public:
