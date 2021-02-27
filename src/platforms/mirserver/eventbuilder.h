@@ -16,7 +16,7 @@
 
 #ifndef QTMIR_EVENT_REGISTRY_H
 #define QTMIR_EVENT_REGISTRY_H
-#include <miroil/eventbuilderbase.h>
+#include <miroil/event_builder.h>
 
 #include <QtGlobal>
 #include <QHoverEvent>
@@ -35,16 +35,11 @@ namespace qtmir {
     it can make a MirInputEvent version of a QInputEvent containing also information that the latter does not carry,
     such as relative axis movement for pointer devices.
 */
-class EventBuilder : public miroil::EventBuilderBase {
-    
+class EventBuilder : public miroil::EventBuilder {
 public:
     static EventBuilder *instance();
     EventBuilder();
     virtual ~EventBuilder();
-
-    /* Stores information that cannot be carried by QInputEvents so that it can be fully
-       reconstructed later given the same qtTimestamp */
-    void store(const MirInputEvent *mirInputEvent, ulong qtTimestamp);
 
     /*
         Builds a MirEvent version of the given QInputEvent using also extra data from the
@@ -68,26 +63,8 @@ public:
                                 Qt::TouchPointStates /* qtTouchPointStates */,
                                 ulong qtTimestamp);
 
-    EventInfo *findInfo(ulong qtTimestamp);
-
 private:
     mir::EventUPtr makeMirEvent(QInputEvent *qtEvent, int x, int y, MirPointerButtons buttons);
-
-
-    /*
-      Ring buffer that stores information on recent MirInputEvents that cannot be carried by QInputEvents.
-
-      When MirInputEvents are dispatched through a QML scene, not all of its information can be carried
-      by QInputEvents. Some information is lost. Thus further on, if we want to transform a QInputEvent back into
-      its original MirInputEvent so that it can be consumed by a mir::scene::Surface and properly handled by mir clients
-      we have to reach out to this EventRegistry to get the missing bits.
-
-      Given the objective of this EventRegistry (MirInputEvent reconstruction after having gone through QQuickWindow input dispatch
-      as a QInputEvent), it stores information only about the most recent MirInputEvents.
-     */
-    QVector<EventInfo> m_eventInfoVector;
-    int m_nextIndex{0};
-    int m_count{0};
 
     static EventBuilder *m_instance;
 };
