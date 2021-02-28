@@ -21,7 +21,6 @@
 // Mir
 #include <mir/graphics/display.h>
 #include <mir/graphics/display_configuration.h>
-#include <mir/shell/display_configuration_controller.h>
 #include <mir/geometry/point.h>
 
 namespace mg = mir::graphics;
@@ -33,7 +32,7 @@ ScreensController::ScreensController(const QSharedPointer<ScreensModel> &model,
     : QObject(parent)
     , m_screensModel(model)
     , m_display(display)
-    , m_displayConfigurationController(controller)
+    , m_displayConfigurationController(std::make_shared<miroil::DisplayConfigurationControllerWrapper>(controller))
 {
 }
 
