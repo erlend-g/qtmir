@@ -275,7 +275,7 @@ void WindowManagementPolicy::deliver_keyboard_event(const MirKeyboardEvent *even
         ensureWindowIsActive(window);
     }
 
-    miroil::dispatchInputEvent(window, miral::toolkit::mir_keyboard_event_input_event(event));
+    miroil::dispatch_input_event(window, miral::toolkit::mir_keyboard_event_input_event(event));
 }
 
 void WindowManagementPolicy::deliver_touch_event(const MirTouchEvent *event,
@@ -283,7 +283,7 @@ void WindowManagementPolicy::deliver_touch_event(const MirTouchEvent *event,
 {
     ensureWindowIsActive(window);
 
-    miroil::dispatchInputEvent(window, miral::toolkit::mir_touch_event_input_event(event));
+    miroil::dispatch_input_event(window, miral::toolkit::mir_touch_event_input_event(event));
 }
 
 void WindowManagementPolicy::deliver_pointer_event(const MirPointerEvent *event,
@@ -294,7 +294,7 @@ void WindowManagementPolicy::deliver_pointer_event(const MirPointerEvent *event,
         ensureWindowIsActive(window);
     }
 
-    miroil::dispatchInputEvent(window, miral::toolkit::mir_pointer_event_input_event(event));
+    miroil::dispatch_input_event(window, miral::toolkit::mir_pointer_event_input_event(event));
 }
 
 /* Methods to allow Shell to request changes to the window stack. Called from the Qt GUI thread */
