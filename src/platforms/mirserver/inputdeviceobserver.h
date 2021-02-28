@@ -22,7 +22,7 @@
 #include <QVector>
 #include <QMutex>
 
-#include "miroil/inputdeviceobserver.h"
+#include "miroil/input_device_observer.h"
 
 namespace mir { namespace input { class Device; }}
 
@@ -40,12 +40,12 @@ private Q_SLOTS:
 
 protected:
     void applyKeymap();
-    void applyKeymap(const std::shared_ptr<mir::input::Device> &device);
-    void device_added(const std::shared_ptr<mir::input::Device> &device);
-    void device_removed(const std::shared_ptr<mir::input::Device> &device);
+    void applyKeymap(const std::shared_ptr<miroil::InputDevice> &device);
+    void device_added(const std::shared_ptr<miroil::InputDevice> &device);
+    void device_removed(const std::shared_ptr<miroil::InputDevice> &device);
 
     QString m_keymap;
-    QVector<std::shared_ptr<mir::input::Device>> m_devices;
+    QVector<std::shared_ptr<miroil::InputDevice>> m_devices;
     QMutex m_mutex;
 };
 
