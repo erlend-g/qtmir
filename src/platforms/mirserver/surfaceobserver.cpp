@@ -84,7 +84,8 @@ void SurfaceObserver::notifySurfaceModifications(const miral::WindowSpecificatio
         Q_EMIT inputBoundsChanged(qRect);
     }
     if (modifications.confine_pointer().is_set()) {
-        Q_EMIT confinesMousePointerChanged(modifications.confine_pointer().value() == mir_pointer_confined_to_window);
+        Q_EMIT confinesMousePointerChanged((modifications.confine_pointer().value() == mir_pointer_confined_oneshot) ||
+                                           (modifications.confine_pointer().value() == mir_pointer_confined_persistent));
     }
     if (modifications.name().is_set()) {
         Q_EMIT nameChanged(QString::fromStdString(modifications.name().value()));
