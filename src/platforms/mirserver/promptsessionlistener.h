@@ -24,7 +24,7 @@
 
 #include <miral/application.h>
 #include <miroil/promptsessionlistener.h>
-#include <miroil/promptsession.h>
+#include "promptsession.h"
 
 namespace qtmir {
     
@@ -49,21 +49,21 @@ public:
     static std::shared_ptr<miroil::PromptSessionListener> create();
     
 Q_SIGNALS:
-    void promptSessionStarting(miroil::PromptSession const &session);
-    void promptSessionStopping(miroil::PromptSession const &session);
-    void promptSessionSuspending(miroil::PromptSession const &session);
-    void promptSessionResuming(miroil::PromptSession const &session);
+    void promptSessionStarting(qtmir::PromptSession const &session);
+    void promptSessionStopping(qtmir::PromptSession const &session);
+    void promptSessionSuspending(qtmir::PromptSession const &session);
+    void promptSessionResuming(qtmir::PromptSession const &session);
 
-    void promptProviderAdded(miroil::PromptSession const&, miral::Application const&);
-    void promptProviderRemoved(miroil::PromptSession const&, miral::Application const&);    
+    void promptProviderAdded(qtmir::PromptSession const&, miral::Application const&);
+    void promptProviderRemoved(qtmir::PromptSession const&, miral::Application const&);    
     
 private:
-    QHash<const mir::scene::PromptSession *, miroil::PromptSession> m_mirPromptToSessionHash;
+    QHash<const mir::scene::PromptSession *, qtmir::PromptSession> m_mirPromptToSessionHash;
 };
 
 }
 
-Q_DECLARE_METATYPE(miroil::PromptSession)
+Q_DECLARE_METATYPE(qtmir::PromptSession)
 Q_DECLARE_METATYPE(miral::Application)
 
 #endif // QTMIR_PROMPTSESSIONLISTENER_H

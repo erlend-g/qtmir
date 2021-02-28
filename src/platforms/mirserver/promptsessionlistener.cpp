@@ -25,7 +25,7 @@ PromptSessionListener::PromptSessionListener(QObject *parent) :
     QObject(parent)
 {
     qCDebug(QTMIR_MIR_MESSAGES) << "PromptSessionListener::PromptSessionListener - this=" << this;
-    qRegisterMetaType<miroil::PromptSession>("qtmir::PromptSession");
+    qRegisterMetaType<qtmir::PromptSession>("qtmir::PromptSession");
     qRegisterMetaType<miral::Application>("miral::Application");
 }
 
