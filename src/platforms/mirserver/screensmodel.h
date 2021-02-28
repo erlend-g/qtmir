@@ -22,13 +22,12 @@
 
 // Mir
 #include "mir/int_wrapper.h"
+#include <miroil/display_listener_wrapper.h>
 
 // std
 #include <memory>
 
 namespace mir {
-    namespace compositor { class DisplayListener; }
-
     namespace graphics {
         namespace detail { struct GraphicsConfCardIdTag; struct GraphicsConfOutputIdTag; }
     typedef IntWrapper <detail::GraphicsConfCardIdTag> DisplayConfigurationCardId;
@@ -82,7 +81,7 @@ public:
     void init(
         const std::shared_ptr<mir::graphics::Display>& display,
         const std::shared_ptr<QtCompositor>& compositor,
-        const std::shared_ptr<mir::compositor::DisplayListener>& displayListener);
+        const std::shared_ptr<miroil::DisplayListenerWrapper> & displayListener);
     void terminate();
 
     // override for testing purposes
@@ -100,7 +99,7 @@ private:
 
     std::weak_ptr<mir::graphics::Display> m_display;
     std::shared_ptr<QtCompositor> m_compositor;
-    std::shared_ptr<mir::compositor::DisplayListener> m_displayListener;
+    std::shared_ptr<miroil::DisplayListenerWrapper> m_displayListener;
     QList<Screen*> m_screenList;
     bool m_compositing;
     std::shared_ptr<OrientationSensor> m_orientationSensor;

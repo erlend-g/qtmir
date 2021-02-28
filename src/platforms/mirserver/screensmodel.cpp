@@ -28,7 +28,7 @@
 #include <mir/graphics/display.h>
 #include <mir/graphics/display_buffer.h>
 #include <mir/graphics/display_configuration.h>
-#include <mir/compositor/display_listener.h>
+#include <miroil/display_listener_wrapper.h>
 
 // Qt
 #include <QScreen>
@@ -53,7 +53,7 @@ ScreensModel::ScreensModel(QObject *parent)
 void ScreensModel::init(
     const std::shared_ptr<mir::graphics::Display>& display,
     const std::shared_ptr<QtCompositor>& compositor,
-    const std::shared_ptr<mir::compositor::DisplayListener>& displayListener)
+    const std::shared_ptr<miroil::DisplayListenerWrapper>& displayListener)
 {
     m_display = display;
     m_compositor = compositor;
