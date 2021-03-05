@@ -1,3 +1,5 @@
+pkg_check_modules(MIROIL miroil REQUIRED)
+
 set(
   SURFACE_MANAGER_TEST_SOURCES
   surface_manager_test.cpp
