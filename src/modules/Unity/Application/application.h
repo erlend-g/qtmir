@@ -105,8 +105,6 @@ public:
     unity::shell::application::MirSurfaceListInterface* promptSurfaceList() const override;
     int surfaceCount() const override { return surfaceList()->count(); }
     void close() override;
-    bool visible() const override;
-    void setVisible(bool visible) override;
 
     ProcessState processState() const { return m_processState; }
     void setProcessState(ProcessState value);
@@ -180,7 +178,6 @@ private:
     bool m_exemptFromLifecycle;
     QSize m_initialSurfaceSize;
     bool m_closing{false};
-    bool m_visible;
 
     mutable MirSurfaceListModel m_surfaceList;
     ProxySurfaceListModel *m_proxyPromptSurfaceList;

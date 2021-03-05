@@ -49,7 +49,6 @@ public:
     virtual Qt::ScreenOrientations supportedOrientations() const = 0;
     virtual bool rotatesWindowContents() const = 0;
     virtual bool isTouchApp() const = 0;
-    virtual bool noDisplay() const = 0;
 
 protected:
     ApplicationInfo() = default;
