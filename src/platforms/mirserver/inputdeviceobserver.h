@@ -40,9 +40,9 @@ private Q_SLOTS:
 
 protected:
     void applyKeymap();
-    void applyKeymap(const std::shared_ptr<miroil::InputDevice> &device);
-    void device_added(const std::shared_ptr<miroil::InputDevice> &device);
-    void device_removed(const std::shared_ptr<miroil::InputDevice> &device);
+    void applyKeymap(std::shared_ptr<miroil::InputDevice> device);
+    void device_added(miroil::InputDevice device);
+    void device_removed(miroil::InputDevice device);
 
     QString m_keymap;
     QVector<std::shared_ptr<miroil::InputDevice>> m_devices;

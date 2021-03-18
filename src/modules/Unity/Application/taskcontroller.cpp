@@ -24,7 +24,7 @@
 #include "logging.h"
 #include "nativeinterface.h"
 #include "promptsessionlistener.h"
-#include <miroil/promptsession.h>
+#include "promptsession.h"
 #include "sessionauthorizer.h"
 
 // common
@@ -91,11 +91,11 @@ void TaskController::onSessionStopping(const miral::ApplicationInfo &appInfo)
     qmlSession->setLive(false);
 }
 
-void TaskController::onPromptSessionStarting(const miroil::PromptSession &promptSession)
+void TaskController::onPromptSessionStarting(const PromptSession &promptSession)
 {
     DEBUG_MSG << " - promptSession=" << promptSession.get();
 
-    std::shared_ptr<mir::scene::Session> appSession = m_promptSessionManager->applicationFor(promptSession);
+    std::shared_ptr<mir::scene::Session> appSession = m_promptSessionManager->application_for(promptSession);
     SessionInterface *qmlAppSession = findSession(appSession.get());
     if (qmlAppSession) {
         m_mirPromptToSessionHash[promptSession.get()] = qmlAppSession;
@@ -105,7 +105,7 @@ void TaskController::onPromptSessionStarting(const miroil::PromptSession &prompt
     }
 }
 
-void TaskController::onPromptSessionStopping(const miroil::PromptSession &promptSession)
+void TaskController::onPromptSessionStopping(const PromptSession &promptSession)
 {
     DEBUG_MSG << " - promptSession=" << promptSession.get();
 
@@ -115,7 +115,7 @@ void TaskController::onPromptSessionStopping(const miroil::PromptSession &prompt
     m_mirPromptToSessionHash.remove(promptSession.get());
 }
 
-void TaskController::onPromptProviderAdded(const miroil::PromptSession &promptSession,
+void TaskController::onPromptProviderAdded(const PromptSession &promptSession,
                                            const miral::Application &promptProvider)
 {
     DEBUG_MSG << " - promptSession=" << promptSession.get() << " promptProvider=" << promptProvider.get();
@@ -135,7 +135,7 @@ void TaskController::onPromptProviderAdded(const miroil::PromptSession &promptSe
     qmlAppSession->addChildSession(qmlPromptProvider);
 }
 
-void TaskController::onPromptProviderRemoved(const miroil::PromptSession &promptSession,
+void TaskController::onPromptProviderRemoved(const PromptSession &promptSession,
                                              const miral::Application &promptProvider)
 {
     DEBUG_MSG << " - promptSession=" << promptSession.get() << " promptProvider=" << promptProvider.get();

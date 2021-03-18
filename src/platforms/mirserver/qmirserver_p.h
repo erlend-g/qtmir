@@ -41,7 +41,7 @@
 // miroil
 #include <miroil/compositor.h>
 #include <miroil/mirserverhooks.h>
-#include <miroil/promptsessionmanager.h>
+#include <miroil/prompt_session_manager.h>
 #include <miroil/openglcontextfactory.h>
 
 class MirServerThread;

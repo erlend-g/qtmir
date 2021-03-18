@@ -24,7 +24,7 @@
 #include <memory>
 
 // miroil
-#include <miroil/promptsessionmanager.h>
+#include <miroil/prompt_session_manager.h>
 
 // qtmir
 class QMirServerPrivate;

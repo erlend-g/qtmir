@@ -46,12 +46,12 @@ void MirInputDeviceObserver::setKeymap(const QString &keymap)
 
 void MirInputDeviceObserver::applyKeymap()
 {
-    Q_FOREACH(const auto &device, m_devices) {
+    Q_FOREACH(auto &device, m_devices) {
         applyKeymap(device);
     }
 }
 
-void MirInputDeviceObserver::applyKeymap(const std::shared_ptr<miroil::InputDevice> &device)
+void MirInputDeviceObserver::applyKeymap(std::shared_ptr<miroil::InputDevice> device)
 {
     if (!m_keymap.isEmpty()) {
         const QStringList stringList = m_keymap.split('+', QString::SkipEmptyParts);
@@ -77,23 +77,29 @@ void MirInputDeviceObserver::applyKeymap(const std::shared_ptr<miroil::InputDevi
     }
 }
 
-void MirInputDeviceObserver::device_added(const std::shared_ptr<miroil::InputDevice> &device)
+void MirInputDeviceObserver::device_added(miroil::InputDevice device)
 {
     QMutexLocker locker(&m_mutex);  // lock so that Qt and Mir don't apply the keymap at the same time
     
-    if (device->is_keyboard() && device->is_alpha_numeric()) {
-        qCDebug(QTMIR_MIR_KEYMAP) << "Device added" << device->get_device_id();
-        m_devices.append(device);
-        applyKeymap(device);
+    if (device.is_keyboard() && device.is_alpha_numeric()) {
+        qCDebug(QTMIR_MIR_KEYMAP) << "Device added" << device.get_device_id();
+        m_devices.append(std::make_shared<miroil::InputDevice>(device));
+        applyKeymap(std::make_shared<miroil::InputDevice>(device));
     }
 }
 
-void MirInputDeviceObserver::device_removed(const std::shared_ptr<miroil::InputDevice> &device)
+void MirInputDeviceObserver::device_removed(miroil::InputDevice device)
 {
     QMutexLocker locker(&m_mutex);  // lock so that Qt and Mir don't apply the keymap at the same time
-
-    if (m_devices.contains(device)) {
-        qCDebug(QTMIR_MIR_KEYMAP) << "Device removed" << device->get_device_id();
-        m_devices.removeAll(device);
-    }
+    
+    size_t n = m_devices.size();
+    for (int i = 0; i < n;) {
+        if (*m_devices[i].get() == device) {
+            qCDebug(QTMIR_MIR_KEYMAP) << "Device removed" << device.get_device_id();
+            m_devices.remove(i);
+        }
+        else {
+            i++;            
+        }
+    }    
 }

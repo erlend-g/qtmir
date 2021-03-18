@@ -29,7 +29,7 @@
 #include <miral/application_info.h>
 
 // mirserver
-#include <miroil/promptsessionmanager.h>
+#include <miroil/prompt_session_manager.h>
 
 namespace mir {
     namespace scene {
@@ -51,6 +51,7 @@ namespace qtmir
 
 class AppNotifier;
 class ApplicationInfo;
+class PromptSession;
 class PromptSessionListener;
 class SessionInterface;
 
@@ -99,10 +100,10 @@ public Q_SLOTS:
     void onSessionStarting(const miral::ApplicationInfo &appInfo);
     void onSessionStopping(const miral::ApplicationInfo &appInfo);
 
-    void onPromptSessionStarting(const miroil::PromptSession& promptSession);
-    void onPromptSessionStopping(const miroil::PromptSession& promptSession);
-    void onPromptProviderAdded(const miroil::PromptSession &promptSession, const miral::Application &);
-    void onPromptProviderRemoved(const miroil::PromptSession &promptSession, const miral::Application &);
+    void onPromptSessionStarting(const qtmir::PromptSession& promptSession);
+    void onPromptSessionStopping(const qtmir::PromptSession& promptSession);
+    void onPromptProviderAdded(const qtmir::PromptSession &promptSession, const miral::Application &);
+    void onPromptProviderRemoved(const qtmir::PromptSession &promptSession, const miral::Application &);
 
 protected:
     TaskController(QObject *parent = nullptr);

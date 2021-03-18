@@ -23,7 +23,7 @@
 #include <QObject>
 
 #include <miral/application.h>
-#include <miroil/promptsessionlistener.h>
+#include <miroil/prompt_session_listener.h>
 #include "promptsession.h"
 
 namespace qtmir {

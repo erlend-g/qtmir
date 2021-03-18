@@ -27,7 +27,7 @@
 #include "mirglconfig.h"
 #include "qtcompositor.h"
 
-#include <miroil/promptsessionmanager.h>
+#include <miroil/prompt_session_manager.h>
 #include <miroil/persist_display_config.h>
 #include <miroil/setcompositor.h>
 #include <miroil/display_listener_wrapper.h>

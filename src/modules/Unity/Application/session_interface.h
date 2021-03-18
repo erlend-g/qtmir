@@ -26,7 +26,7 @@
 // local
 #include "objectlistmodel.h"
 #include "sessionmodel.h"
-#include <miroil/promptsession.h>
+#include "promptsession.h"
 
 // Qt
 #include <QQmlListProperty>
@@ -107,13 +107,13 @@ public:
     virtual void removeChildSession(SessionInterface* session) = 0;
     virtual void foreachChildSession(const std::function<void(SessionInterface* session)>& f) const = 0;
 
-    virtual miroil::PromptSession activePromptSession() const = 0;
-    virtual void foreachPromptSession(const std::function<void(const miroil::PromptSession&)>& f) const = 0;
+    virtual PromptSession activePromptSession() const = 0;
+    virtual void foreachPromptSession(const std::function<void(const PromptSession&)>& f) const = 0;
 
     virtual void setFullscreen(bool fullscreen) = 0;
     virtual void setLive(const bool) = 0;
-    virtual void appendPromptSession(const miroil::PromptSession& session) = 0;
-    virtual void removePromptSession(const miroil::PromptSession& session) = 0;
+    virtual void appendPromptSession(const PromptSession& session) = 0;
+    virtual void removePromptSession(const PromptSession& session) = 0;
 
 Q_SIGNALS:
     void applicationChanged(unity::shell::application::ApplicationInfoInterface* application);
