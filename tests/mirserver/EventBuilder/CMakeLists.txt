@@ -11,6 +11,8 @@ include_directories(
 include_directories(
   SYSTEM
   ${MIRSERVER_INCLUDE_DIRS}
+  ${MIROIL_INCLUDE_DIRS}
+  ${MIRAL_INCLUDE_DIRS}
 )
 
 add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})
@@ -20,6 +22,7 @@ target_link_libraries(
   qpa-mirserver
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
+  ${MIROIL_LIBRARIES}
 )
 
 add_test(EventBuilder, EventBuilderTest)

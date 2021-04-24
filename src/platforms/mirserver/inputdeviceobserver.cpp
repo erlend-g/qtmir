@@ -93,7 +93,7 @@ void MirInputDeviceObserver::device_removed(miroil::InputDevice device)
     QMutexLocker locker(&m_mutex);  // lock so that Qt and Mir don't apply the keymap at the same time
     
     size_t n = m_devices.size();
-    for (int i = 0; i < n;) {
+    for (size_t i = 0; i < n;) {
         if (*m_devices[i].get() == device) {
             qCDebug(QTMIR_MIR_KEYMAP) << "Device removed" << device.get_device_id();
             m_devices.remove(i);
