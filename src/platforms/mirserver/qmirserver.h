@@ -26,7 +26,6 @@
 // miroil
 #include <miroil/prompt_session_manager.h>
 
-// qtmir
 class QMirServerPrivate;
 class ScreensController;
 class ScreensModel;

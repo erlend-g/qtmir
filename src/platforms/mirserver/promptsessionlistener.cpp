@@ -34,11 +34,6 @@ PromptSessionListener::~PromptSessionListener()
     qCDebug(QTMIR_MIR_MESSAGES) << "PromptSessionListener::~PromptSessionListener - this=" << this;
 }
 
-std::shared_ptr<miroil::PromptSessionListener> PromptSessionListener::create()
-{
-    return std::shared_ptr<miroil::PromptSessionListener>(new PromptSessionListener());    
-}
-
 void PromptSessionListener::starting(std::shared_ptr<ms::PromptSession> const& prompt_session)
 {
     qCDebug(QTMIR_MIR_MESSAGES) << "PromptSessionListener::starting - this=" << this << "prompt_session=" << prompt_session.get();

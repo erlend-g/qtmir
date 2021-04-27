@@ -51,7 +51,7 @@ void MirInputDeviceObserver::applyKeymap()
     }
 }
 
-void MirInputDeviceObserver::applyKeymap(std::shared_ptr<miroil::InputDevice> device)
+void MirInputDeviceObserver::applyKeymap(miroil::InputDevice device)
 {
     if (!m_keymap.isEmpty()) {
         const QStringList stringList = m_keymap.split('+', QString::SkipEmptyParts);
@@ -63,11 +63,11 @@ void MirInputDeviceObserver::applyKeymap(std::shared_ptr<miroil::InputDevice> de
             variant = stringList.at(1);
         }
 
-        qCDebug(QTMIR_MIR_KEYMAP) << "Applying keymap" <<  layout << variant << "on" << device->get_device_id() << QString::fromStdString(device->get_device_name());
+        qCDebug(QTMIR_MIR_KEYMAP) << "Applying keymap" <<  layout << variant << "on" << device.get_device_id() << QString::fromStdString(device.get_device_name());
 
         try
         {
-            device->apply_keymap(layout.toStdString(), variant.toStdString());
+            device.apply_keymap(layout.toStdString(), variant.toStdString());
             qCDebug(QTMIR_MIR_KEYMAP) << "Keymap applied";
         }
         catch(std::exception const& e)
@@ -83,8 +83,8 @@ void MirInputDeviceObserver::device_added(miroil::InputDevice device)
     
     if (device.is_keyboard() && device.is_alpha_numeric()) {
         qCDebug(QTMIR_MIR_KEYMAP) << "Device added" << device.get_device_id();
-        m_devices.append(std::make_shared<miroil::InputDevice>(device));
-        applyKeymap(std::make_shared<miroil::InputDevice>(device));
+        m_devices.append(device);
+        applyKeymap(device);
     }
 }
 
@@ -94,7 +94,7 @@ void MirInputDeviceObserver::device_removed(miroil::InputDevice device)
     
     size_t n = m_devices.size();
     for (size_t i = 0; i < n;) {
-        if (*m_devices[i].get() == device) {
+        if (m_devices[i] == device) {
             qCDebug(QTMIR_MIR_KEYMAP) << "Device removed" << device.get_device_id();
             m_devices.remove(i);
         }

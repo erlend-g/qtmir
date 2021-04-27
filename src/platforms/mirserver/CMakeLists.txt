@@ -36,7 +36,6 @@ include_directories(
 include_directories(
     SYSTEM
     ${MIRAL_INCLUDE_DIRS}
-    ${MIROIL_INCLUDE_DIRS}
     ${MIRRENDERERGLDEV_INCLUDE_DIRS}
     ${MIRSERVER_INCLUDE_DIRS}
     ${MIRPLATFORM_INCLUDE_DIRS}
@@ -112,6 +111,10 @@ add_library(qpa-mirserver SHARED
     # We need to run moc on these headers
 )
 
+target_include_directories(qpa-mirserver
+    PRIVATE ${MIROIL_INCLUDE_DIRS}
+)
+
 # We have to remove -pedantic for tracepoints.c
 string (REPLACE " -pedantic " " " TRACEPOINTS_CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
 # BYTE_ORDER needed to compile tracepoints in C99 mode.
@@ -122,9 +125,9 @@ target_link_libraries(
     qpa-mirserver
     ${QT5PLATFORMSUPPORT_LIBS}
 
+    ${MIROIL_LDFLAGS}
     ${MIRAL_LDFLAGS}
     ${MIRSERVER_LDFLAGS}
-    ${MIROIL_LDFLAGS}
     ${URL_DISPATCHER_LDFLAGS}
     ${EGL_LDFLAGS}
     ${GL_LIBRARIES}

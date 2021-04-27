@@ -20,8 +20,6 @@
 
 #include <miroil/edid.h>
 
-using namespace miral;
-
 using TestDataParamType =
     std::tuple<std::vector<uint8_t>, std::string, std::string, uint16_t, uint32_t>;
 
@@ -74,7 +72,7 @@ class EdidTest :
 
 TEST(EdidTest, Construct)
 {
-    Edid edid;
+    miroil::Edid edid;
     EXPECT_EQ(edid.vendor, "");
     EXPECT_EQ(edid.product_code, 0);
     EXPECT_EQ(edid.serial_number, uint32_t(0));
@@ -82,7 +80,7 @@ TEST(EdidTest, Construct)
 
     char zero_array[13] = {0};
     for (int i = 0; i < 4; i++) {
-        EXPECT_EQ(edid.descriptors[i].type, Edid::Descriptor::Type::undefined);
+        EXPECT_EQ(edid.descriptors[i].type, miroil::Edid::Descriptor::Type::undefined);
 
         auto& value = edid.descriptors[i].value;
         EXPECT_TRUE(std::equal(std::begin(value.monitor_name), std::end(value.monitor_name), std::begin(zero_array)));
@@ -98,7 +96,7 @@ TEST_P(EdidTest, Test_InvalidChecksum)
     std::vector<uint8_t> invalidChecksum{data};
     invalidChecksum[8] = invalidChecksum[8]+1;
 
-    Edid edid;
+    miroil::Edid edid;
     try {
         edid.parse_data(invalidChecksum);
     } catch(std::runtime_error const& err) {
@@ -118,7 +116,7 @@ TEST_P(EdidTest, Test_InvalidHeader)
     uint8_t checksum = std::accumulate(invalidHeader.begin(), invalidHeader.end()-1, 0);
     invalidHeader[invalidHeader.size()-1] = (uint8_t)(~checksum+1);
 
-    Edid edid;
+    miroil::Edid edid;
     try {
         edid.parse_data(invalidHeader);
     } catch(std::runtime_error const& err) {
@@ -132,7 +130,7 @@ TEST_P(EdidTest, Test_Valid)
 {
     const std::vector<uint8_t>& data = std::get<0>(GetParam());
 
-    Edid edid;
+    miroil::Edid edid;
     EXPECT_NO_THROW(edid.parse_data(data));
 }
 
@@ -144,7 +142,7 @@ TEST_P(EdidTest, CheckData)
     const uint16_t product_code = std::get<3>(GetParam());
     const uint32_t serial_number = std::get<4>(GetParam());
 
-    Edid edid;
+    miroil::Edid edid;
     EXPECT_NO_THROW(edid.parse_data(data));
 
     ASSERT_EQ(edid.vendor, vendor);
@@ -154,7 +152,7 @@ TEST_P(EdidTest, CheckData)
     if (monitor_name != "") {
         bool found_monitor_name = false;
         for (int i = 0; i < 4; i++) {
-            if (edid.descriptors[i].type == Edid::Descriptor::Type::monitor_name ) {
+            if (edid.descriptors[i].type == miroil::Edid::Descriptor::Type::monitor_name ) {
                 found_monitor_name = true;
                 ASSERT_EQ(std::string(&edid.descriptors[i].value.monitor_name[0]), monitor_name);
             }

@@ -20,7 +20,7 @@
 namespace qtmir
 {
 
-MockTaskController::MockTaskController(std::shared_ptr<qtmir::PromptSessionManager> promptSessionManager, QObject *parent)
+MockTaskController::MockTaskController(std::shared_ptr<miroil::PromptSessionManager> promptSessionManager, QObject *parent)
     : TaskController(promptSessionManager, parent)
 {
     using namespace ::testing;

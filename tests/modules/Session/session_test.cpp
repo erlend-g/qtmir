@@ -287,7 +287,7 @@ TEST_F(SessionTests, SessionStopsWhileSuspendingDoesntSuspend)
     {
     public:
         SessionTestClass(const std::shared_ptr<mir::scene::Session>& session,
-                         const std::shared_ptr<qtmir::PromptSessionManager>& promptSessionManager)
+                         const std::shared_ptr<miroil::PromptSessionManager>& promptSessionManager)
             : Session(session, promptSessionManager) {}
 
         using Session::m_suspendTimer;

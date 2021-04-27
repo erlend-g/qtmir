@@ -100,8 +100,8 @@ public Q_SLOTS:
     void onSessionStarting(const miral::ApplicationInfo &appInfo);
     void onSessionStopping(const miral::ApplicationInfo &appInfo);
 
-    void onPromptSessionStarting(const qtmir::PromptSession& promptSession);
-    void onPromptSessionStopping(const qtmir::PromptSession& promptSession);
+    void onPromptSessionStarting(const PromptSession& promptSession);
+    void onPromptSessionStopping(const PromptSession& promptSession);
     void onPromptProviderAdded(const qtmir::PromptSession &promptSession, const miral::Application &);
     void onPromptProviderRemoved(const qtmir::PromptSession &promptSession, const miral::Application &);
 
@@ -111,7 +111,7 @@ protected:
 
 private:
     void connectToAppNotifier(AppNotifier *);
-    void connectToPromptSessionListener(qtmir::PromptSessionListener *);
+    void connectToPromptSessionListener(PromptSessionListener *);
 
     std::shared_ptr<miroil::PromptSessionManager> m_promptSessionManager;
 

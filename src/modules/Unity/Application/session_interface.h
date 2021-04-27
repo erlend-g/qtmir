@@ -26,7 +26,6 @@
 // local
 #include "objectlistmodel.h"
 #include "sessionmodel.h"
-#include "promptsession.h"
 
 // Qt
 #include <QQmlListProperty>
@@ -41,6 +40,7 @@ namespace qtmir {
 
 class MirSurfaceInterface;
 class MirSurfaceListModel;
+class PromptSession;
 
 class SessionInterface : public QObject {
     Q_OBJECT

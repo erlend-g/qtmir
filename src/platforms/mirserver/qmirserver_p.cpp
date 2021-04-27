@@ -96,7 +96,6 @@ std::shared_ptr<miroil::PromptSessionManager> QMirServerPrivate::promptSessionMa
 }
 
 QMirServerPrivate::QMirServerPrivate() :
-    m_mirServerHooks(&qtmir::PromptSessionListener::create),
     m_openGLContextFactory(new MirGLConfig()),    
     runner(qtmirArgc, qtmirArgv)
 {
@@ -105,11 +104,12 @@ QMirServerPrivate::QMirServerPrivate() :
 
 qtmir::PromptSessionListener *QMirServerPrivate::promptSessionListener() const
 {
-    return dynamic_cast <qtmir::PromptSessionListener*>(m_mirServerHooks.promptSessionListener());
+    return dynamic_cast<qtmir::PromptSessionListener*>(m_mirServerHooks.promptSessionListener());
 }
 
 void QMirServerPrivate::run(const std::function<void()> &startCallback)
 {
+    m_mirServerHooks.createPromptSessionListener(std::dynamic_pointer_cast<miroil::PromptSessionListener>(std::make_shared<qtmir::PromptSessionListener>()));
 
     miral::AddInitCallback addInitCallback{[&, this]
     {

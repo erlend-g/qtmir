@@ -27,9 +27,9 @@
 class QMirServer;
 
 // mir
-namespace qtmir  { class Seats; }
+namespace qtmir { class Seats; }
 namespace miroil { class PromptSessionManager; }
-namespace mir    { namespace shell { class PersistentSurfaceStore; }}
+namespace mir { namespace shell { class PersistentSurfaceStore; }}
 
 class NativeInterface : public QPlatformNativeInterface
 {

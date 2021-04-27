@@ -22,12 +22,12 @@
 #include <QHash>
 #include <QObject>
 
-#include <miral/application.h>
-#include <miroil/prompt_session_listener.h>
 #include "promptsession.h"
+#include <miroil/prompt_session_listener.h>
+#include <miral/application.h>
 
 namespace qtmir {
-    
+
 class PromptSessionListener : public QObject, public miroil::PromptSessionListener
 {
 Q_OBJECT
@@ -44,10 +44,7 @@ public:
                                std::shared_ptr<mir::scene::Session> const& prompt_provider) override;
     void prompt_provider_removed(mir::scene::PromptSession const& prompt_session,
                                  std::shared_ptr<mir::scene::Session> const& prompt_provider) override;
-    
-    // creator new instance
-    static std::shared_ptr<miroil::PromptSessionListener> create();
-    
+
 Q_SIGNALS:
     void promptSessionStarting(qtmir::PromptSession const &session);
     void promptSessionStopping(qtmir::PromptSession const &session);
@@ -55,7 +52,7 @@ Q_SIGNALS:
     void promptSessionResuming(qtmir::PromptSession const &session);
 
     void promptProviderAdded(qtmir::PromptSession const&, miral::Application const&);
-    void promptProviderRemoved(qtmir::PromptSession const&, miral::Application const&);    
+    void promptProviderRemoved(qtmir::PromptSession const&, miral::Application const&);
     
 private:
     QHash<const mir::scene::PromptSession *, qtmir::PromptSession> m_mirPromptToSessionHash;

@@ -28,7 +28,7 @@
 #include <Unity/Application/session_interface.h>
 #include <Unity/Application/sharedwakelock.h>
 #include <Unity/Application/proc_info.h>
-#include "promptsessionmanager.h"
+#include <miroil/prompt_session_manager.h>
 
 #include "mock_proc_info.h"
 #include "mock_mir_session.h"
@@ -70,7 +70,7 @@ public:
     testing::NiceMock<MockSharedWakelock> sharedWakelock;
     testing::NiceMock<MockSettings> settings;
     std::shared_ptr<StubPromptSessionManager> stubPromptSessionManager{std::make_shared<StubPromptSessionManager>()};
-    std::shared_ptr<qtmir::PromptSessionManager> promptSessionManager{std::make_shared<qtmir::PromptSessionManager>(stubPromptSessionManager)};
+    std::shared_ptr<miroil::PromptSessionManager> promptSessionManager{std::make_shared<miroil::PromptSessionManager>(stubPromptSessionManager)};
     std::shared_ptr<StubPersistentSurfaceStore> persistentSurfaceStore;
 
     QSharedPointer<qtmir::TaskController> taskControllerSharedPointer{new testing::NiceMock<qtmir::MockTaskController>(promptSessionManager)};
