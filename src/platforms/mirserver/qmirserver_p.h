@@ -42,10 +42,11 @@
 #include <miroil/compositor.h>
 #include <miroil/mirserverhooks.h>
 #include <miroil/prompt_session_manager.h>
-#include <miroil/openglcontextfactory.h>
+#include <miroil/open_gl_context.h>
 
 class MirServerThread;
 class QOpenGLContext;
+class QPlatformOpenGLContext;
 
 namespace qtmir
 {
@@ -84,7 +85,7 @@ public:
 private:
     qtmir::SetSessionAuthorizer  m_sessionAuthorizer;
     miroil::MirServerHooks       m_mirServerHooks;
-    miroil::OpenGLContextFactory m_openGLContextFactory;    
+    miroil::OpenGLContext        m_openGLContext;    
     std::shared_ptr<qtmir::MirDisplayConfigurationStorage> m_DisplayConfigutaionStorage;
 
     miral::MirRunner runner;
