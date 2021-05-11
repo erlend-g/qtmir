@@ -83,9 +83,9 @@ public:
         { return &m_windowController; }
 
 private:
-    qtmir::SetSessionAuthorizer  m_sessionAuthorizer;
-    miroil::MirServerHooks       m_mirServerHooks;
-    miroil::OpenGLContext        m_openGLContext;    
+    qtmir::SetSessionAuthorizer m_sessionAuthorizer;
+    miroil::OpenGLContext       m_openGLContext;
+    qtmir::MirServerHooks       m_mirServerHooks;
     std::shared_ptr<qtmir::MirDisplayConfigurationStorage> m_DisplayConfigutaionStorage;
 
     miral::MirRunner runner;
