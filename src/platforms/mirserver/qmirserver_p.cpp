@@ -26,6 +26,7 @@
 #include "promptsessionlistener.h"
 #include "screenscontroller.h"
 #include "qtcompositor.h"
+#include "namedcursor.h"
 
 #include <miroil/prompt_session_manager.h>
 #include <miroil/persist_display_config.h>
@@ -107,6 +108,14 @@ qtmir::PromptSessionListener *QMirServerPrivate::promptSessionListener() const
 void QMirServerPrivate::run(const std::function<void()> &startCallback)
 {
     m_mirServerHooks.createPromptSessionListener(std::dynamic_pointer_cast<miroil::PromptSessionListener>(std::make_shared<qtmir::PromptSessionListener>()));
+    m_mirServerHooks.createNamedCursor([](std::string const & name)
+        {
+            // We are not responsible for loading cursors. This is left for shell to do as it's drawing its own QML cursor.
+            // So here we work around Mir API by storing just the cursor name in the CursorImage.
+            return std::make_shared<qtmir::NamedCursor>(name.c_str());
+        }
+    );
+    
 
     miral::AddInitCallback addInitCallback{[&, this]
     {
