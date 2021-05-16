@@ -39,7 +39,7 @@
 //#include <mir_toolkit/cursors.h>
 // #include <mir_toolkit/event.h>
 #include <miroil/surfaceobserver.h>
-#include <miroil/named_cursor.h>
+#include "namedcursor.h"
 
 // mirserver
 #include <logging.h>
@@ -1407,7 +1407,7 @@ void MirSurface::SurfaceObserverImpl::start_drag_and_drop(std::vector<uint8_t> c
 QCursor MirSurface::SurfaceObserverImpl::createQCursorFromMirCursorImage(const mir::graphics::CursorImage &cursorImage) {
     if (cursorImage.as_argb_8888() == nullptr) {
         // Must be a named cursor
-        auto namedCursor = dynamic_cast<const miroil::NamedCursor*>(&cursorImage);
+        auto namedCursor = dynamic_cast<const qtmir::NamedCursor*>(&cursorImage);
         Q_ASSERT(namedCursor != nullptr);
         if (namedCursor) {
             // NB: If we need a named cursor not covered by Qt::CursorShape, we won't be able to
@@ -1415,11 +1415,10 @@ QCursor MirSurface::SurfaceObserverImpl::createQCursorFromMirCursorImage(const m
 
             Qt::CursorShape cursorShape = Qt::ArrowCursor;
             {
-                QByteArray name(namedCursor->name().c_str());
-                auto iterator = m_cursorNameToShape.constFind(name);
+                auto iterator = m_cursorNameToShape.constFind(namedCursor->name());
                 if (iterator == m_cursorNameToShape.constEnd()) {
                     qCWarning(QTMIR_SURFACES).nospace() << "SurfaceObserver: unrecognized cursor name "
-                                                        << name;
+                                                        << namedCursor->name();
                 } else {
                     cursorShape = iterator.value();
                 }
