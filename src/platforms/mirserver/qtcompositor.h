@@ -37,7 +37,7 @@ public:
     QtCompositor() = default;
     virtual ~QtCompositor() noexcept = default;
 
-    // Callbacks comming from mir    
+    // Callbacks coming from mir    
     void start();
     void stop();
 
