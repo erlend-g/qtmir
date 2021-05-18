@@ -79,7 +79,7 @@ bool MirServerThread::waitForMirStartup()
 QPlatformOpenGLContext *QMirServerPrivate::createPlatformOpenGLContext(QOpenGLContext *context) const
 {
     QSurfaceFormat            format     = context->format();
-    mir::graphics::Display  * mirDisplay = m_mirServerHooks.theMirDisplay().get();
+    mir::graphics::Display  * mirDisplay = m_mirServerHooks.the_mir_display().get();
     mir::graphics::GLConfig * gl_config  = m_openGLContext.the_open_gl_config().get();
     
     if (!gl_config)
@@ -90,7 +90,7 @@ QPlatformOpenGLContext *QMirServerPrivate::createPlatformOpenGLContext(QOpenGLCo
 
 std::shared_ptr<miroil::PromptSessionManager> QMirServerPrivate::promptSessionManager() const
 {
-    return std::make_shared<miroil::PromptSessionManager>(m_mirServerHooks.thePromptSessionManager());
+    return std::make_shared<miroil::PromptSessionManager>(m_mirServerHooks.the_prompt_session_manager());
 }
 
 QMirServerPrivate::QMirServerPrivate() :
@@ -102,13 +102,13 @@ QMirServerPrivate::QMirServerPrivate() :
 
 qtmir::PromptSessionListener *QMirServerPrivate::promptSessionListener() const
 {
-    return dynamic_cast<qtmir::PromptSessionListener*>(m_mirServerHooks.promptSessionListener());
+    return dynamic_cast<qtmir::PromptSessionListener*>(m_mirServerHooks.the_prompt_session_listener());
 }
 
 void QMirServerPrivate::run(const std::function<void()> &startCallback)
 {
-    m_mirServerHooks.createPromptSessionListener(std::dynamic_pointer_cast<miroil::PromptSessionListener>(std::make_shared<qtmir::PromptSessionListener>()));
-    m_mirServerHooks.createNamedCursor([](std::string const & name)
+    m_mirServerHooks.create_prompt_session_listener(std::dynamic_pointer_cast<miroil::PromptSessionListener>(std::make_shared<qtmir::PromptSessionListener>()));
+    m_mirServerHooks.create_named_cursor([](std::string const & name)
         {
             // We are not responsible for loading cursors. This is left for shell to do as it's drawing its own QML cursor.
             // So here we work around Mir API by storing just the cursor name in the CursorImage.
@@ -142,9 +142,9 @@ void QMirServerPrivate::run(const std::function<void()> &startCallback)
     runner.add_start_callback([&]
     {
         screensModel->update();
-        screensController = QSharedPointer<ScreensController>(new ScreensController(screensModel, m_mirServerHooks.theMirDisplay(), m_mirServerHooks.theDisplayConfigurationController()));
+        screensController = QSharedPointer<ScreensController>(new ScreensController(screensModel, m_mirServerHooks.the_mir_display(), m_mirServerHooks.the_display_configuration_controller()));
         std::shared_ptr<miroil::InputDeviceObserver> ptr = std::make_shared<qtmir::MirInputDeviceObserver>();
-        m_mirServerHooks.createInputDeviceObserver(ptr);
+        m_mirServerHooks.create_input_device_observer(ptr);
     });
 
     runner.add_start_callback(startCallback);
