@@ -40,7 +40,7 @@
 
 // miroil
 #include <miroil/compositor.h>
-#include <miroil/mirserverhooks.h>
+#include <miroil/mir_server_hooks.h>
 #include <miroil/prompt_session_manager.h>
 #include <miroil/open_gl_context.h>
 
