@@ -20,13 +20,13 @@
 #include "logging.h"
 #include "inputdeviceobserver.h"
 #include "mirdisplayconfigurationpolicy.h"
+#include "namedcursor.h"
 #include "mirglconfig.h"
 #include "miropenglcontext.h"
 #include "windowmanagementpolicy.h"
 #include "promptsessionlistener.h"
 #include "screenscontroller.h"
 #include "qtcompositor.h"
-#include "namedcursor.h"
 
 #include <miroil/prompt_session_manager.h>
 #include <miroil/persist_display_config.h>
